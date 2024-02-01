@@ -1,0 +1,51 @@
+<div class="h-full">
+  <mat-toolbar color="primary" class="h-16">
+    <mat-icon>eco</mat-icon>
+    <mat-nav-list
+      class="hidden p-0 h-full items-center text-center sm:flex sm:flex-row sm:ms-auto"
+    >
+      <mat-list-item *ngFor="let anchor of links" class="h-full p-8">
+        <a [routerLink]="anchor.link" class="rounded-none text-white">
+          {{ anchor.label }}
+        </a>
+      </mat-list-item>
+      <button mat-raised-button color="accent" class="p-4 px-8 mx-4">
+        Login
+      </button>
+    </mat-nav-list>
+    <button
+      mat-icon-button
+      (click)="sidenav.toggle()"
+      type="menu"
+      class="ms-auto sm:hidden"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="fixed h-full w-full">
+    <mat-sidenav
+      #sidenav
+      mode="over"
+      position="end"
+      [autoFocus]="false"
+      class="min-w-72 sm:hidden"
+    >
+      <mat-nav-list class="p-0">
+        <mat-list-item *ngFor="let anchor of links" class="p-8">
+          <a [routerLink]="anchor.link" class="rounded-none block">
+            {{ anchor.label }}
+          </a>
+        </mat-list-item>
+        <div class="flex">
+          <button mat-raised-button color="accent" class="p-4 px-8 m-4 flex-1">
+            Login
+          </button>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
