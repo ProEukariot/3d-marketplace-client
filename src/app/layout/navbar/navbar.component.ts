@@ -7,8 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class NavbarComponent {
   @Input() links: { label: string; link: string }[] = [
-    { label: 'Home', link: '/' },
-    { label: 'Explore', link: '/' },
-    { label: 'About', link: '/' },
+    { label: 'Home', link: '/home' },
+    { label: 'Explore', link: '/explore' },
+    { label: 'About', link: '/about' },
+    { label: 'Profile', link: '/profile' },
   ];
 }

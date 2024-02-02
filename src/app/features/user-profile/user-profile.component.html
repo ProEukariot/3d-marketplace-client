@@ -1,0 +1,22 @@
+<mat-drawer-container class="h-full">
+  <mat-drawer
+    mode="side"
+    position="start"
+    [disableClose]="true"
+    [opened]="true"
+  >
+    <mat-list
+      class="transition-all flex flex-col items-center justify-center p-0"
+    >
+      <a routerLink="user-settings" mat-icon-button class="m-2">
+        <mat-icon>account_circle</mat-icon>
+      </a>
+      <a routerLink="upload-model" mat-icon-button class="m-2">
+        <mat-icon>add_circle</mat-icon>
+      </a>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
