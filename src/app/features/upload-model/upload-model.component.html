@@ -10,7 +10,44 @@
     <span matTextPrefix>$&nbsp;</span>
   </mat-form-field>
 
-  <button mat-raised-button color="accent" (click)="submitForm()" class="p-6">
+  <mat-form-field>
+    <button mat-icon-button matPrefix (click)="fileInput.click()" class="ms-2">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <input type="text" matInput readonly formControlName="fileName" />
+    <button matTextSuffix mat-button (click)="addFiles(fileInput)">Add</button>
+    <input
+      #fileInput
+      type="file"
+      hidden
+      multiple
+      (change)="handleFileInputChange(fileInput.files)"
+    />
+  </mat-form-field>
+
+  <mat-list class="p-0">
+    <ng-container *ngFor="let file of files; index as i">
+      <mat-list-item>
+        <span>{{ file.name }} {{ file.size }}</span>
+        <button
+          matListItemMeta
+          mat-icon-button
+          (click)="removeFiles(i)"
+          class="hover:text-danger"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-divider class="last:mb-6"></mat-divider>
+    </ng-container>
+  </mat-list>
+
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="submitForm(); log()"
+    class="p-6"
+  >
     Upload model
   </button>
 </form>

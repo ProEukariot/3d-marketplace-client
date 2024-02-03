@@ -1,5 +1,5 @@
 <div class="h-full">
-  <mat-toolbar color="primary" class="h-16">
+  <mat-toolbar color="primary" class="h-[4rem]">
     <mat-icon>eco</mat-icon>
     <mat-nav-list
       class="hidden p-0 h-full items-center text-center sm:flex sm:flex-row sm:ms-auto"
@@ -23,13 +23,13 @@
     </button>
   </mat-toolbar>
 
-  <mat-sidenav-container class="fixed h-full w-full">
+  <mat-sidenav-container class="fixed h-calc w-full">
     <mat-sidenav
       #sidenav
       mode="over"
       position="end"
       [autoFocus]="false"
-      class="min-w-72 sm:hidden"
+      class="min-w-[18rem] sm:hidden"
     >
       <mat-nav-list class="p-0">
         <mat-list-item *ngFor="let anchor of links" class="p-8">
