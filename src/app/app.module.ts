@@ -8,10 +8,9 @@ import { MaterialModule } from './material/material.module';
 import { UserProfileModule } from './features/user-profile.module';
 import { LayoutModule } from './layout/layout.module';
 import { UserSettingsComponent } from './features/user-settings/user-settings.component';
-import { FileInputComponent } from './shared/components/file-input/file-input.component';
 
 @NgModule({
-  declarations: [AppComponent, FileInputComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,37 +1,93 @@
-<form [formGroup]="addModelForm" class="flex flex-col m-4">
+<form [formGroup]="uploadModelForm" class="flex flex-col m-4">
+  <!-- Name input -->
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput type="text" formControlName="name" />
+    <input
+      #nameInput
+      matInput
+      type="text"
+      maxlength="20"
+      formControlName="name"
+    />
+    <mat-hint align="end">{{ nameInput.value.length }}/20</mat-hint>
+    <!-- Errors -->
+    <mat-error *ngIf="uploadModelForm.controls['name'].hasError('required')"
+      >Name is required</mat-error
+    >
+    <mat-error *ngIf="uploadModelForm.controls['name'].hasError('pattern')"
+      >Name should only contain Latin characters, numbers, hyphens, and
+      underscores
+    </mat-error>
   </mat-form-field>
+  <!--  -->
 
+  <!-- Amount input -->
   <mat-form-field>
     <mat-label>Amount</mat-label>
-    <input matInput type="number" formControlName="amount" />
-    <span matTextPrefix>$&nbsp;</span>
+    <input
+      matInput
+      min="0"
+      max="99999"
+      type="number"
+      formControlName="amount"
+    />
+    <span matTextSuffix class="ms-2">$&nbsp;</span>
+    <!-- Errors -->
+    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('required')"
+      >Amount is required</mat-error
+    >
+    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('min')"
+      >Minimum value is 0</mat-error
+    >
+    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('max')"
+      >Maximum value is 99999</mat-error
+    >
   </mat-form-field>
+  <!--  -->
 
+  <!-- Files input -->
   <mat-form-field>
-    <button mat-icon-button matPrefix (click)="fileInput.click()" class="ms-2">
+    <button
+      mat-icon-button
+      matPrefix
+      type="button"
+      (click)="fileInput.click()"
+      class="ms-2"
+    >
       <mat-icon>attach_file</mat-icon>
     </button>
-    <input type="text" matInput readonly formControlName="fileName" />
-    <button matTextSuffix mat-button (click)="addFiles(fileInput)">Add</button>
     <input
-      #fileInput
-      type="file"
-      hidden
-      multiple
-      (change)="handleFileInputChange(fileInput.files)"
+      #filePreview
+      type="text"
+      matInput
+      readonly
+      value="Files not selected"
+      formControlName="displayFiles"
     />
+    <!-- Errors -->
+
+    <button
+      matTextSuffix
+      mat-button
+      type="button"
+      (click)="addFiles(fileInput.files)"
+    >
+      Add
+    </button>
+    <input #fileInput type="file" hidden multiple accept=".pdf" />
   </mat-form-field>
+  <!-- (change)="handleFileInputChange(fileInput.files)" -->
 
   <mat-list class="p-0">
-    <ng-container *ngFor="let file of files; index as i">
+    <ng-container
+      *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
+    >
       <mat-list-item>
         <span>{{ file.name }} {{ file.size }}</span>
         <button
           matListItemMeta
           mat-icon-button
+          type="button"
           (click)="removeFiles(i)"
           class="hover:text-danger"
         >
@@ -42,10 +98,17 @@
     </ng-container>
   </mat-list>
 
+  <app-file-input
+    formControlName="test"
+    accept=".pdf"
+    [multiple]="true"
+  ></app-file-input>
+
   <button
     mat-raised-button
     color="accent"
-    (click)="submitForm(); log()"
+    type="submit"
+    (click)="submitForm()"
     class="p-6"
   >
     Upload model

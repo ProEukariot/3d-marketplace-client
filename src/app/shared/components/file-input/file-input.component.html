@@ -1,1 +1,49 @@
-<p>file-input works!</p>
+<!-- 
+<div class="h-56 bg-slate-500 flex items-center justify-center">
+    <span>Drag an drop or</span>
+    <button mat-button type="button" (click)="droppedFiles.click()">
+      Choose file
+    </button>
+    <input
+      #droppedFiles
+      hidden
+      type="file"
+      accept=".pdf"
+      (change)="onFileInput(droppedFiles.files)"
+    />
+  </div>
+  <ul>
+    <li
+      *ngFor="
+        let f of uploadModelForm.controls['droppedFiles'].value;
+        index as i
+      "
+    >
+      {{ f.name }} <button (click)="removeFiles(i)">DELETE-{{i}}</button>
+    </li>
+  </ul> -->
+
+<div
+  dragAndDrop
+  (fileDropped)="onFileDropped($event)"
+  class="h-56 flex border border-indigo-400 items-center justify-center"
+>
+  <span>Drag an drop or</span>
+  <button mat-button type="button" (click)="droppedFiles.click()">
+    Choose file
+  </button>
+  <input
+    #droppedFiles
+    hidden
+    type="file"
+    [accept]="accept"
+    [multiple]="multiple"
+    (change)="onFileChange(droppedFiles.files)"
+  />
+</div>
+
+<ul>
+  <li *ngFor="let file of files; index as i">
+    {{ file.name }} <button (click)="onFileRemoval(i)">DEL</button>
+  </li>
+</ul>
