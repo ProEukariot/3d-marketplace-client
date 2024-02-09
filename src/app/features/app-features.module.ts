@@ -5,26 +5,24 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { UploadModelComponent } from './upload-model/upload-model.component';
-import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponentsModule } from '../shared/components/app-components.module';
+import { ExploreComponent } from './explore/explore.component';
+import { ModelDetailsComponent } from './model-details/model-details.component';
 
 const routes: Routes = [
-  {
-    path: 'profile',
-    component: UserProfileComponent,
-    children: [
-      { path: '', redirectTo: 'user-settings', pathMatch: 'full' },
-      { path: 'upload-model', component: UploadModelComponent },
-      { path: 'user-settings', component: UserSettingsComponent },
-    ],
-  },
+  { path: 'profile', component: UserProfileComponent },
+  { path: 'explore', component: ExploreComponent },
+  { path: 'explore/:id', component: ModelDetailsComponent },
+  { path: 'upload-model', component: UploadModelComponent },
 ];
 
 @NgModule({
   declarations: [
     UserProfileComponent,
     UploadModelComponent,
+    ExploreComponent,
+    ModelDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -35,4 +33,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class UserProfileModule {}
+export class AppFeaturesModule {}

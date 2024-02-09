@@ -1,0 +1,15 @@
+<section class="p-4">
+  <div class="grid-template">
+    <mat-card *ngFor="let model of models | async" (click)="onCardClick(model.id)">
+      <img mat-card-image src="https://placehold.co/400" />
+      <mat-card-header class="p-2">
+        <mat-card-title>{{ model.name }}</mat-card-title>
+        <mat-card-subtitle>{{ model.price | currency }}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <a routerLink="/upload-model" mat-fab class="fixed right-8 bottom-8">
+    <mat-icon>add</mat-icon>
+  </a>
+</section>

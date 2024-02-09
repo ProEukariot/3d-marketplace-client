@@ -1,4 +1,8 @@
-<form [formGroup]="uploadModelForm" class="flex flex-col m-4">
+<form
+  [formGroup]="uploadModelForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col m-4"
+>
   <!-- Name input -->
   <mat-form-field>
     <mat-label>Name</mat-label>
@@ -46,69 +50,17 @@
   <!--  -->
 
   <!-- Files input -->
-  <mat-form-field>
-    <button
-      mat-icon-button
-      matPrefix
-      type="button"
-      (click)="fileInput.click()"
-      class="ms-2"
-    >
-      <mat-icon>attach_file</mat-icon>
-    </button>
-    <input
-      #filePreview
-      type="text"
-      matInput
-      readonly
-      value="Files not selected"
-      formControlName="displayFiles"
-    />
-    <!-- Errors -->
-
-    <button
-      matTextSuffix
-      mat-button
-      type="button"
-      (click)="addFiles(fileInput.files)"
-    >
-      Add
-    </button>
-    <input #fileInput type="file" hidden multiple accept=".pdf" />
-  </mat-form-field>
-  <!-- (change)="handleFileInputChange(fileInput.files)" -->
-
-  <mat-list class="p-0">
-    <ng-container
-      *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
-    >
-      <mat-list-item>
-        <span>{{ file.name }} {{ file.size }}</span>
-        <button
-          matListItemMeta
-          mat-icon-button
-          type="button"
-          (click)="removeFiles(i)"
-          class="hover:text-danger"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-list-item>
-      <mat-divider class="last:mb-6"></mat-divider>
-    </ng-container>
-  </mat-list>
-
   <app-file-input
-    formControlName="test"
+    formControlName="files"
     accept=".pdf"
     [multiple]="true"
   ></app-file-input>
 
   <button
     mat-raised-button
+    type="submit"
     color="accent"
     type="submit"
-    (click)="submitForm()"
     class="p-6"
   >
     Upload model

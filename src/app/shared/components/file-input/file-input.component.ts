@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  Inject,
   Injector,
   Input,
   OnInit,
@@ -10,10 +11,6 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormControl,
-  FormControlDirective,
-  FormControlName,
-  FormGroupDirective,
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
@@ -23,7 +20,6 @@ const FILE_INPUT_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   multi: true,
   useExisting: forwardRef(() => FileInputComponent),
-  // useExisting: FileInputComponent,
 };
 
 @Component({
@@ -32,22 +28,33 @@ const FILE_INPUT_VALUE_ACCESSOR = {
   styleUrls: ['./file-input.component.css'],
   providers: [FILE_INPUT_VALUE_ACCESSOR],
 })
-export class FileInputComponent implements ControlValueAccessor {
+export class FileInputComponent implements ControlValueAccessor, OnInit {
   files: File[] | null = null;
 
   onChange = (files: File[] | null) => {};
   onTouched = () => {};
   touched = false;
   disabled = false;
+
+  ngControl!: NgControl;
+
   @Input() multiple: boolean = false;
   @Input() accept: string = '*/*';
   @ViewChild('droppedFiles') fileInputRef!: ElementRef<HTMLInputElement>;
+
+  constructor(@Inject(Injector) private injector: Injector) {}
+
+  ngOnInit(): void {
+    this.ngControl = this.injector.get(NgControl);
+  }
 
   onFileDropped(event: FileDroppedEvent) {
     this.onFileChange(event.files);
   }
 
   onFileChange(fileList: FileList | null) {
+    this.markAsTouched();
+
     if (!fileList) return;
 
     const files = Array.from(fileList);
@@ -58,8 +65,6 @@ export class FileInputComponent implements ControlValueAccessor {
 
     console.log(this.files);
 
-    // this.fileInputRef.nativeElement.files = null;
-    this.markAsTouched();
     this.onChange(this.files);
   }
 
@@ -93,21 +98,4 @@ export class FileInputComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
-  // formControl!: FormControl;
-
-  // constructor(private readonly injector: Injector) {}
-
-  // ngOnInit(): void {
-  //   const ngControl = this.injector.get(NgControl);
-
-  //   if (ngControl instanceof FormControlName) {
-  //     this.formControl = this.injector
-  //       .get(FormGroupDirective)
-  //       .getControl(ngControl);
-  //   } else {
-  //     this.formControl = (ngControl as FormControlDirective)
-  //       .form as FormControl;
-  //   }
-  // }
 }

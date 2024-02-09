@@ -1,32 +1,7 @@
-<!-- 
-<div class="h-56 bg-slate-500 flex items-center justify-center">
-    <span>Drag an drop or</span>
-    <button mat-button type="button" (click)="droppedFiles.click()">
-      Choose file
-    </button>
-    <input
-      #droppedFiles
-      hidden
-      type="file"
-      accept=".pdf"
-      (change)="onFileInput(droppedFiles.files)"
-    />
-  </div>
-  <ul>
-    <li
-      *ngFor="
-        let f of uploadModelForm.controls['droppedFiles'].value;
-        index as i
-      "
-    >
-      {{ f.name }} <button (click)="removeFiles(i)">DELETE-{{i}}</button>
-    </li>
-  </ul> -->
-
 <div
   dragAndDrop
   (fileDropped)="onFileDropped($event)"
-  class="h-56 flex border border-indigo-400 items-center justify-center"
+  class="drop-area h-56 flex border items-center justify-center"
 >
   <span>Drag an drop or</span>
   <button mat-button type="button" (click)="droppedFiles.click()">
@@ -42,8 +17,20 @@
   />
 </div>
 
-<ul>
-  <li *ngFor="let file of files; index as i">
-    {{ file.name }} <button (click)="onFileRemoval(i)">DEL</button>
-  </li>
-</ul>
+<mat-list class="p-0 mt-6">
+  <ng-container *ngFor="let file of files; index as i">
+    <mat-list-item>
+      <span>{{ file.name }} {{ file.size }}</span>
+      <button
+        matListItemMeta
+        mat-icon-button
+        type="button"
+        (click)="onFileRemoval(i)"
+        class="hover:text-danger"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+    <mat-divider class="last:mb-6"></mat-divider>
+  </ng-container>
+</mat-list>

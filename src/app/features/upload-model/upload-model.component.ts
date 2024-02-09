@@ -13,6 +13,10 @@ export class UploadModelComponent implements OnInit {
   lastInputFiles: File[] = [];
   @ViewChild('filePreview') filePreview!: ElementRef<HTMLInputElement>;
 
+  getControl(name: string) {
+    return this.uploadModelForm.controls[name];
+  }
+
   ngOnInit(): void {
     this.uploadModelForm = new FormGroup({
       name: new FormControl(null, [
@@ -24,9 +28,7 @@ export class UploadModelComponent implements OnInit {
         Validators.min(0),
         Validators.max(99999),
       ]),
-      displayFiles: new FormControl(null),
-      files: new FormControl<File[] | null>(null, [Validators.required]),
-      test: new FormControl(null,  Validators.required),
+      files: new FormControl(null, Validators.required),
     });
   }
 
@@ -44,20 +46,8 @@ export class UploadModelComponent implements OnInit {
   }
 
   log() {
-    // console.log(this.fileInput);
-    // console.log('Loaded:', this.files);
-
-    // console.log('DP:', this.uploadModelForm.controls['droppedFiles'].value);
-    // console.log(this.uploadModelForm.controls['droppedFiles'].errors);
-    console.log(this.uploadModelForm.get('test')?.value);
-    console.log(this.uploadModelForm.get('test')?.errors);
-
-    // console.log(this.uploadModelForm.value);
-    // console.log('files', this.uploadModelForm.get('files')?.errors);
-    // console.log(
-    //   'displayFiles',
-    //   this.uploadModelForm.get('displayFiles')?.errors
-    // );
+    console.log(this.uploadModelForm.value);
+    console.log(this.uploadModelForm.get('files')?.errors);
   }
 
   handleFileInputChange(fileList: FileList | null) {
@@ -69,18 +59,6 @@ export class UploadModelComponent implements OnInit {
       displayFiles = `${displayFiles} (+${fileList.length - 1} files)`;
 
     this.filePreview.nativeElement.value = displayFiles;
-
-    // /
-    // const errors = this.uploadModelForm.controls['files'].errors;
-    // console.log("PPP", errors);
-    // console.log(this.uploadModelForm.controls['displayFiles']);
-    // this.uploadModelForm.controls['displayFiles'].setErrors(errors)
-
-    // this.uploadModelForm.get('fileName')?.setValue(displayFiles);
-
-    // const files = Array.from(fileList);
-
-    // this.lastInputFiles = files;
   }
 
   addFiles(inputFiles: FileList | null) {
@@ -94,7 +72,6 @@ export class UploadModelComponent implements OnInit {
     this.uploadModelForm.patchValue({
       files: [...(filesSelectedBefore || []), ...files],
     });
-    // this.files.push(...files);
   }
 
   removeFiles(position: number) {
@@ -103,13 +80,10 @@ export class UploadModelComponent implements OnInit {
     console.log(files.splice(position, 1));
 
     if (!files.length) this.uploadModelForm.patchValue({ droppedFiles: null });
-
-    // this.uploadModelForm.patchValue({ files: null });
-    // this.files.splice(position, 1);
   }
 
-  submitForm() {
-    // console.log(this.uploadModelForm.value);
+  onSubmit() {
+    console.log(this.uploadModelForm.value);
     this.log();
   }
 }

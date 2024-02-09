@@ -8,6 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 
 const modules = [
   MatButtonModule,
@@ -18,6 +19,7 @@ const modules = [
   MatInputModule,
   MatCardModule,
   MatDividerModule,
+  MatMenuModule,
 ];
 
 @NgModule({

@@ -5,9 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { UserProfileModule } from './features/user-profile.module';
+import { AppFeaturesModule } from './features/app-features.module';
 import { LayoutModule } from './layout/layout.module';
-import { UserSettingsComponent } from './features/user-settings/user-settings.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +16,7 @@ import { UserSettingsComponent } from './features/user-settings/user-settings.co
     BrowserAnimationsModule,
     MaterialModule,
     LayoutModule,
-    UserProfileModule,
+    AppFeaturesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
