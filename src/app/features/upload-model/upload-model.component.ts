@@ -10,7 +10,6 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 })
 export class UploadModelComponent implements OnInit {
   uploadModelForm!: FormGroup;
-  lastInputFiles: File[] = [];
   @ViewChild('filePreview') filePreview!: ElementRef<HTMLInputElement>;
 
   getControl(name: string) {
