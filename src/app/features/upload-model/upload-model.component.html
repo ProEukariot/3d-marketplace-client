@@ -50,11 +50,46 @@
   <!--  -->
 
   <!-- Files input -->
-  <app-file-input
-    formControlName="files"
-    accept=".pdf"
-    [multiple]="true"
-  ></app-file-input>
+  <!-- <mat-form-field>
+    <app-file-input
+      formControlName="files"
+      accept=".pdf"
+      [multiple]="true"
+    ></app-file-input>
+  </mat-form-field> -->
+
+  <mat-form-field
+    dragAndDrop
+    (fileDropped)="onFileDropped($event)"
+    (dragover)="onDragOver()"
+    (dragleave)="onDragLeave()"
+  >
+    <app-dnd-file-input
+      #fileInput
+      formControlName="files"
+      [required]="true"
+      [multiple]="true"
+      accept=".pdf"
+      mode="stack"
+    ></app-dnd-file-input>
+    <mat-error>ewq</mat-error>
+  </mat-form-field>
+
+  <mat-action-list>
+    <mat-list-item
+      *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
+    >
+      <span>{{ file.name }}</span>
+      <button
+        mat-icon-button
+        matListItemMeta
+        type="button"
+        (click)="fileInput.removeFileAt(i)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-action-list>
 
   <button
     mat-raised-button

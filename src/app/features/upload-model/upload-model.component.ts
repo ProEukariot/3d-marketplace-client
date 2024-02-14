@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { Observable, BehaviorSubject, of } from 'rxjs';
+import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop';
+import { DndFileInputComponent } from 'src/app/shared/components/dnd-file-input/dnd-file-input.component';
 
 @Component({
   selector: 'app-upload-model',
@@ -10,7 +12,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 })
 export class UploadModelComponent implements OnInit {
   uploadModelForm!: FormGroup;
-  @ViewChild('filePreview') filePreview!: ElementRef<HTMLInputElement>;
+  @ViewChild(DndFileInputComponent) dndFileInput!: DndFileInputComponent;
 
   getControl(name: string) {
     return this.uploadModelForm.controls[name];
@@ -27,62 +29,57 @@ export class UploadModelComponent implements OnInit {
         Validators.min(0),
         Validators.max(99999),
       ]),
-      files: new FormControl(null, Validators.required),
-    });
-  }
-
-  onFileInput(fileList: FileList | null) {
-    if (!fileList) return;
-
-    const files = Array.from(fileList);
-
-    const filesSelectedBefore: File[] | null =
-      this.uploadModelForm.get('droppedFiles')?.value;
-
-    this.uploadModelForm.patchValue({
-      droppedFiles: [...(filesSelectedBefore || []), ...files],
+      files: new FormControl<File[] | null>(null, [Validators.required]),
     });
   }
 
   log() {
-    console.log(this.uploadModelForm.value);
-    console.log(this.uploadModelForm.get('files')?.errors);
+    console.log(this.uploadModelForm.errors);
+    // console.log(this.uploadModelForm.get('files')?.errors);
   }
 
-  handleFileInputChange(fileList: FileList | null) {
-    if (!fileList) return;
+  onFileDropped(event: FileDroppedEvent) {
+    console.log(event);
+    const fileList = event.files;
 
-    let displayFiles = fileList.item(0)?.name || 'Files not selected';
-
-    if (fileList.length > 1)
-      displayFiles = `${displayFiles} (+${fileList.length - 1} files)`;
-
-    this.filePreview.nativeElement.value = displayFiles;
+    // const files = Array.from(fileList);
+    this.dndFileInput.onFileChange(fileList);
   }
 
-  addFiles(inputFiles: FileList | null) {
-    if (!inputFiles) return;
+  onDragOver() {}
 
-    const files = Array.from(inputFiles);
+  onDragLeave() {}
 
-    const filesSelectedBefore: File[] | null =
-      this.uploadModelForm.get('files')?.value;
+  onFileChange(any: any) {
+    // const files = this.uploadModelForm.controls['files'].value;
 
-    this.uploadModelForm.patchValue({
-      files: [...(filesSelectedBefore || []), ...files],
-    });
+    console.log(any);
+
+    // const updatedFiles = [];
+
+    // this.uploadModelForm.patchValue({ files: updatedFiles });
   }
 
-  removeFiles(position: number) {
-    const files: File[] = this.uploadModelForm.get('files')?.value;
+  // removeFile(index: number) {
+  //   let files = this.uploadModelForm.controls['files'].value as File[] | null;
 
-    console.log(files.splice(position, 1));
+  //   if (!files) return;
 
-    if (!files.length) this.uploadModelForm.patchValue({ droppedFiles: null });
-  }
+  //   files.splice(index, 1);
+
+  //   files = files.length > 0 ? files : null;
+
+  //   this.uploadModelForm.patchValue({ files: files });
+  // }
 
   onSubmit() {
-    console.log(this.uploadModelForm.value);
-    this.log();
+    // this.uploadModelForm.controls['files'].markAsTouched()
+    console.log("Name", this.uploadModelForm.controls['name'].errors);
+    console.log("Amount", this.uploadModelForm.controls['amount'].errors);
+    console.log("Files", this.uploadModelForm.controls['files'].errors);
+    
+    console.log("VAL", this.uploadModelForm.value);
+
+    // this.log();
   }
 }

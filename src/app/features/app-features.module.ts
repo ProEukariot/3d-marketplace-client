@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponentsModule } from '../shared/components/app-components.module';
 import { ExploreComponent } from './explore/explore.component';
 import { ModelDetailsComponent } from './model-details/model-details.component';
+import { AppDirectivesModule } from '../shared/directives/app-directives.module';
 
 const routes: Routes = [
   { path: 'profile', component: UserProfileComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     AppComponentsModule,
+    AppDirectivesModule,
   ],
   exports: [RouterModule],
 })
