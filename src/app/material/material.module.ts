@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const modules = [
   MatButtonModule,
@@ -20,6 +21,7 @@ const modules = [
   MatCardModule,
   MatDividerModule,
   MatMenuModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({

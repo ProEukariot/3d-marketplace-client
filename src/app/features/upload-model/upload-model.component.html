@@ -50,14 +50,6 @@
   <!--  -->
 
   <!-- Files input -->
-  <!-- <mat-form-field>
-    <app-file-input
-      formControlName="files"
-      accept=".pdf"
-      [multiple]="true"
-    ></app-file-input>
-  </mat-form-field> -->
-
   <mat-form-field
     dragAndDrop
     (fileDropped)="onFileDropped($event)"
@@ -69,10 +61,18 @@
       formControlName="files"
       [required]="true"
       [multiple]="true"
-      accept=".pdf"
+      accept="*.*"
       mode="stack"
     ></app-dnd-file-input>
-    <mat-error>ewq</mat-error>
+    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('required')"
+      >Files are required</mat-error
+    >
+    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('acceptExt')">
+      This file extensions are not supported</mat-error
+    >
+    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('uniqueExt')"
+      >Same file extensions are not allowed</mat-error
+    >
   </mat-form-field>
 
   <mat-action-list>

@@ -8,6 +8,7 @@ import { MaterialModule } from './material/material.module';
 import { AppFeaturesModule } from './features/app-features.module';
 import { LayoutModule } from './layout/layout.module';
 import { AppDirectivesModule } from './shared/directives/app-directives.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { AppDirectivesModule } from './shared/directives/app-directives.module';
     MaterialModule,
     LayoutModule,
     AppFeaturesModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
