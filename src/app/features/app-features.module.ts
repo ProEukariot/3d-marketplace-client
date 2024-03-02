@@ -10,12 +10,16 @@ import { AppComponentsModule } from '../shared/components/app-components.module'
 import { ExploreComponent } from './explore/explore.component';
 import { ModelDetailsComponent } from './model-details/model-details.component';
 import { AppDirectivesModule } from '../shared/directives/app-directives.module';
+import { SigninComponent } from './signin/signin.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   { path: 'profile', component: UserProfileComponent },
   { path: 'explore', component: ExploreComponent },
   { path: 'explore/:id', component: ModelDetailsComponent },
   { path: 'upload-model', component: UploadModelComponent },
+  { path: 'auth/signin', component: SigninComponent },
+  { path: 'auth/signup', component: SignupComponent },
 ];
 
 @NgModule({
@@ -24,6 +28,8 @@ const routes: Routes = [
     UploadModelComponent,
     ExploreComponent,
     ModelDetailsComponent,
+    SigninComponent,
+    SignupComponent,
   ],
   imports: [
     CommonModule,

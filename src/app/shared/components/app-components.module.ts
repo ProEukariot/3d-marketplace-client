@@ -4,9 +4,12 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { AppDirectivesModule } from '../directives/app-directives.module';
 import { DndFileInputComponent } from './dnd-file-input/dnd-file-input.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+import { Viewer3dComponent } from './viewer3d/viewer3d.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    Viewer3dComponent
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -14,6 +17,6 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     DndFileInputComponent,
     SnackbarComponent,
   ],
-  exports: [DndFileInputComponent],
+  exports: [DndFileInputComponent, Viewer3dComponent],
 })
 export class AppComponentsModule {}

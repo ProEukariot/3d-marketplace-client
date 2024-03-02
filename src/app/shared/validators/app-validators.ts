@@ -1,6 +1,32 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class AppValidators {
+  static match(controlName: string, matchingControlName: string): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const control = formGroup.get(controlName);
+      const matchingControl = formGroup.get(matchingControlName);
+
+      if (!control || !matchingControl) {
+        return null;
+      }
+
+      const registeredErrorrs = control.errors ?? {};
+
+      if (control.value !== matchingControl.value) {
+        control.setErrors({ ...registeredErrorrs, noMatch: true });
+      } else {
+        delete registeredErrorrs['noMatch'];
+        let errors =
+          Object.entries(registeredErrorrs).length > 0
+            ? registeredErrorrs
+            : null;
+        control.setErrors(errors);
+      }
+
+      return null;
+    };
+  }
+
   static acceptExt(allowedExt: string[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const files: File[] = control.value;

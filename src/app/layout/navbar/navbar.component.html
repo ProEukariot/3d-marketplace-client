@@ -4,22 +4,48 @@
     <mat-nav-list
       class="hidden sm:p-0 sm:h-full sm:items-center sm:text-center sm:flex sm:flex-row sm:ms-auto"
     >
+      <ng-container *ngFor="let link of links">
+        <mat-list-item (click)="ref.click()" class="h-full w-24">
+          <a #ref [routerLink]="link.link" class="text-white select-none p-0">
+            {{ link.label }}
+          </a>
+        </mat-list-item>
+      </ng-container>
+
       <mat-list-item
-        *ngFor="let link of links"
-        (click)="ref.click()"
+        *ngIf="isLoggedIn"
+        (click)="loginRef.click()"
+        class="h-full w-24"
+      >
+        <a #loginRef routerLink="/profile" class="text-white select-none p-0">
+          Profile
+        </a>
+      </mat-list-item>
+
+      <!-- Login buttons -->
+      <mat-list-item
+        *ngIf="!isLoggedIn"
+        (click)="loginRef.click()"
         class="h-full w-24"
       >
         <a
-          #ref
-          [routerLink]="link.link"
+          #loginRef
+          routerLink="auth/signin"
           class="text-white select-none p-0"
         >
-          {{ link.label }}
+          Login
         </a>
       </mat-list-item>
-      <!-- <button mat-raised-button color="accent" class="p-4 px-8 mx-4">
-        Login
-      </button> -->
+
+      <mat-list-item
+        *ngIf="isLoggedIn"
+        (click)="logoutRef.click()"
+        class="h-full w-24"
+      >
+        <a #logoutRef class="text-white select-none p-0" (click)="onLogout()">
+          Logout
+        </a>
+      </mat-list-item>
     </mat-nav-list>
     <button
       mat-icon-button
@@ -57,7 +83,7 @@
         </div> -->
     </mat-nav-list>
   </mat-sidenav>
-  
+
   <mat-sidenav-content>
     <ng-content></ng-content>
   </mat-sidenav-content>

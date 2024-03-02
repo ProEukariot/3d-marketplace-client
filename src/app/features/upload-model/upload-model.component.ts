@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
+import { Model3dService } from 'src/app/shared/services/model3d.service';
 
 @Component({
   selector: 'app-upload-model',
@@ -28,7 +29,8 @@ export class UploadModelComponent implements OnInit {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly matSnackBar: MatSnackBar
+    private readonly matSnackBar: MatSnackBar,
+    private readonly model3dService: Model3dService
   ) {}
 
   getControl(name: string) {
@@ -85,8 +87,10 @@ export class UploadModelComponent implements OnInit {
       const formData = new FormData();
       files.forEach((file) => formData.append('files', file, file.name));
 
-      this.http
-        .post<{ insertedId: string }>(`${baseUrl}models/upload`, body)
+      this.model3dService.createModel3d(body);
+
+      this.model3dService
+        .createModel3d(body)
         .pipe(
           catchError((error) => {
             const mes = '3D model is not created';
@@ -97,16 +101,12 @@ export class UploadModelComponent implements OnInit {
           }),
           switchMap((res: { insertedId: string }) => {
             formData.append('model3dId', res.insertedId);
-            return this.http.post<{ insertedIds: string[] }>(
-              `${baseUrl}models/upload/files`,
-              formData
-            );
+
+            return this.model3dService.createFiles(formData);
           })
         )
         .subscribe(
           (res: { insertedIds: string[] }) => {
-            console.log('Inserted files', res);
-
             this.openSnackBar(
               `Files added sucsessfully: ${res.insertedIds.length}`
             );
