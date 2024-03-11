@@ -8,7 +8,8 @@ import { MaterialModule } from './material/material.module';
 import { AppFeaturesModule } from './features/app-features.module';
 import { LayoutModule } from './layout/layout.module';
 import { AppDirectivesModule } from './shared/directives/app-directives.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './shared/interceptors/AuthInterseptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,9 @@ import { HttpClientModule } from '@angular/common/http';
     AppFeaturesModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

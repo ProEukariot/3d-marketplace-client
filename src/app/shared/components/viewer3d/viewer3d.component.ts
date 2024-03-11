@@ -36,6 +36,7 @@ import Color4 from 'three/examples/jsm/renderers/common/Color4';
 export class Viewer3dComponent implements AfterViewInit {
   @ViewChild('canvas')
   private canvasRef!: ElementRef<HTMLCanvasElement>;
+  @Input() dataSource!: string;
 
   private scene!: Scene;
   private camera!: PerspectiveCamera;
@@ -71,7 +72,7 @@ export class Viewer3dComponent implements AfterViewInit {
 
   private loadMesh() {
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('assets/models/Nike Airmax.glb', (gltfScene) => {
+    gltfLoader.load(this.dataSource, (gltfScene) => {
       const mesh = gltfScene.scene;
 
       this.centerObject(mesh);

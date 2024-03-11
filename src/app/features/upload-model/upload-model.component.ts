@@ -51,7 +51,7 @@ export class UploadModelComponent implements OnInit {
       files: new FormControl<File[] | null>(null, [
         Validators.required,
         AppValidators.uniqueFilesExt(),
-        AppValidators.acceptExt(['pdf', 'jpg']),
+        AppValidators.acceptExt(['glb']),
       ]),
     });
   }

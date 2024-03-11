@@ -61,7 +61,7 @@
       formControlName="files"
       [required]="true"
       [multiple]="true"
-      accept="*.*"
+      accept=".glb"
       mode="stack"
     ></app-dnd-file-input>
     <mat-error *ngIf="uploadModelForm.controls['files'].hasError('required')"

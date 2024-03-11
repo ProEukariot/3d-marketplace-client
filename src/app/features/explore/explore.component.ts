@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, from, of } from 'rxjs';
+import { Observable, concat, from, of } from 'rxjs';
+import { IntercextionListenerDirective } from 'src/app/shared/directives/intercextion-listener.directive';
 import { Model3d } from 'src/app/shared/models/model3d';
+import { Model3dService } from 'src/app/shared/services/model3d.service';
 
 @Component({
   selector: 'app-explore',
@@ -9,29 +11,39 @@ import { Model3d } from 'src/app/shared/models/model3d';
   styleUrls: ['./explore.component.css'],
 })
 export class ExploreComponent implements OnInit {
-  models!: Observable<Model3d[]>;
+  page = 1;
+  models!: Model3d[];
 
-  MODELS = [
-    { id: '1', name: 'Name 1', price: 1 },
-    { id: '2', name: 'Name 2', price: 2 },
-    { id: '3', name: 'Name 3', price: 3 },
-    { id: '4', name: 'Name 4', price: 4 },
-    { id: '5', name: 'Name 5', price: 5 },
-    { id: '6', name: 'Name 6', price: 6 },
-    { id: '7', name: 'Name 7', price: 7 },
-    { id: '8', name: 'Name 8', price: 8 },
-  ];
+  isFetching: boolean = false;
+
+  @ViewChild(IntercextionListenerDirective)
+  intercextionListenerDirective!: IntercextionListenerDirective;
 
   constructor(
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly models3dService: Model3dService
   ) {}
 
   ngOnInit(): void {
-    this.models = of(this.MODELS);
+    this.models3dService.loadModels3d(this.page).subscribe((items) => {
+      this.models = items;
+    });
   }
 
   onCardClick(id: string) {
     this.router.navigate([id], { relativeTo: this.route });
+  }
+
+  onScroll() {
+    this.isFetching = true;
+    this.models3dService.loadModels3d(++this.page).subscribe((items) => {
+      this.models.push(...items);
+      this.isFetching = false;
+
+      if (items.length < 1) {
+        this.intercextionListenerDirective.unsubscribe();
+      }
+    });
   }
 }

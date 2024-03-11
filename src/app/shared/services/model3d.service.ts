@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
+import { Model3d } from '../models/model3d';
 
 export type CreateModel3dDto = {
   name: string;
@@ -27,5 +28,13 @@ export class Model3dService {
       `${this.apiUrl}models/upload/files`,
       formData
     );
+  }
+
+  loadModels3d(page: number) {
+    return this.http.get<Model3d[]>(`${this.apiUrl}models/${page}`);
+  }
+
+  loadModel3dFile(id: string, ext:string){
+    
   }
 }
