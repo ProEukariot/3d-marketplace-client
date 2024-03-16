@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
 import { Model3d } from '../models/model3d';
+import { FileMetaDto } from '../dto/file-meta.dto';
 
 export type CreateModel3dDto = {
   name: string;
@@ -34,7 +35,22 @@ export class Model3dService {
     return this.http.get<Model3d[]>(`${this.apiUrl}models/${page}`);
   }
 
-  loadModel3dFile(id: string, ext:string){
-    
+  loadUsersModels3d(page: number) {
+    return this.http.get<Model3d[]>(`${this.apiUrl}models/my/${page}`);
+  }
+
+  getAvailableExtOf(model3dId: string) {
+    return this.http.get<FileMetaDto[]>(
+      `${this.apiUrl}models/${model3dId}/files`
+    );
+  }
+
+  downloadFile(model3dId: string, fileExt: string) {
+    const file = this.http.get(
+      `${this.apiUrl}models/download/${model3dId}/file/${fileExt}`,
+      { responseType: 'blob' }
+    );
+
+    return file;
   }
 }

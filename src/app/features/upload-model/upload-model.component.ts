@@ -10,7 +10,7 @@ import {
   throwError,
   EMPTY,
 } from 'rxjs';
-import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop';
+import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop.directive';
 import { DndFileInputComponent } from 'src/app/shared/components/dnd-file-input/dnd-file-input.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environments/environment';
@@ -54,11 +54,6 @@ export class UploadModelComponent implements OnInit {
         AppValidators.acceptExt(['glb']),
       ]),
     });
-  }
-
-  log() {
-    console.log(this.uploadModelForm.errors);
-    // console.log(this.uploadModelForm.get('files')?.errors);
   }
 
   onFileDropped(event: FileDroppedEvent) {

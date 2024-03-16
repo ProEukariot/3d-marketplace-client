@@ -9,7 +9,7 @@ import { AppFeaturesModule } from './features/app-features.module';
 import { LayoutModule } from './layout/layout.module';
 import { AppDirectivesModule } from './shared/directives/app-directives.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './shared/interceptors/AuthInterseptor';
+import { AuthInterceptor } from './shared/interceptors/auth-interseptor';
 
 @NgModule({
   declarations: [AppComponent],

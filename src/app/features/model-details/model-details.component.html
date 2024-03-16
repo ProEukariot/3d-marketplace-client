@@ -4,6 +4,15 @@
 
 <section>
   <div>
-    <button mat-raised-button>Download</button>
+    <ng-container *ngFor="let file of availableFiles">
+      <button
+        mat-raised-button
+        [disabled]="!isLoggedIn"
+        (click)="onFileDownload(file.ext)"
+        class="my-2 mx-4"
+      >
+        Download .{{ file.ext }}
+      </button>
+    </ng-container>
   </div>
 </section>

@@ -12,7 +12,7 @@ import { Model3dService } from 'src/app/shared/services/model3d.service';
 })
 export class ExploreComponent implements OnInit {
   page = 1;
-  models!: Model3d[];
+  models: Model3d[] = [];
 
   isFetching: boolean = false;
 

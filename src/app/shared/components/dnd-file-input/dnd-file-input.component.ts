@@ -164,10 +164,6 @@ export class DndFileInputComponent
     this.stateChanges.complete();
   }
 
-  log(value?: any) {
-    console.log('LOG', this.control.errors);
-  }
-
   // private updateValue(newValue: File[] | null) {
   //   const arr = [...(this.files ?? []), ...(newValue ?? [])];
   //   return arr;

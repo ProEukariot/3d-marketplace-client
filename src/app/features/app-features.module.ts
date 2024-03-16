@@ -12,6 +12,7 @@ import { ModelDetailsComponent } from './model-details/model-details.component';
 import { AppDirectivesModule } from '../shared/directives/app-directives.module';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   { path: 'profile', component: UserProfileComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'upload-model', component: UploadModelComponent },
   { path: 'auth/signin', component: SigninComponent },
   { path: 'auth/signup', component: SignupComponent },
+  { path: 'home', component: HomeComponent },
 ];
 
 @NgModule({

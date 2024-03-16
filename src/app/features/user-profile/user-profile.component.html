@@ -1,1 +1,25 @@
-<p>UserProfile</p>
+<section class="p-4">
+  <h2>Owned models</h2>
+  <div class="grid-template">
+    <mat-card *ngFor="let model of uploadedModels" (click)="onCardClick(model.id)">
+      <img mat-card-image src="https://placehold.co/400" />
+      <mat-card-header class="p-2">
+        <mat-card-title>{{ model.name }}</mat-card-title>
+        <mat-card-subtitle>{{ model.price | currency }}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <div
+    appIntercextionListener
+    rootMargin="0px"
+    (onScroll)="onScroll()"
+    class="text-xl text-center mt-2"
+  >
+    {{ isFetching ? "Loading..." : "" }}
+  </div>
+
+  <a routerLink="/upload-model" mat-fab class="fixed right-8 bottom-8">
+    <mat-icon>add</mat-icon>
+  </a>
+</section>

@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @Input() links: { label: string; link: string }[] = [
     { label: 'Home', link: '/home' },
     { label: 'Explore', link: '/explore' },
-    { label: 'About', link: '/about' },
   ];
 
   constructor(
