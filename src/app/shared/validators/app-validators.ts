@@ -54,7 +54,7 @@ export class AppValidators {
       const filesExt = files.map((file) => file.name.split('.').pop()!);
 
       for (let ext of filesExt) {
-        console.log(extRecords[ext], !!extRecords[ext]);
+        // console.log(extRecords[ext], !!extRecords[ext]);
 
         if (extRecords[ext]) return { uniqueExt: true };
 
@@ -65,12 +65,12 @@ export class AppValidators {
     };
   }
 
-  static requiredFiles(files: File[]): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const hasError = files.length < 1;
-      return hasError ? { requiredfiles: true } : null;
-    };
-  }
+  // static requiredFiles(files: File[]): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const hasError = files.length < 1;
+  //     return hasError ? { requiredfiles: true } : null;
+  //   };
+  // }
 
   static alwaysError(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {

@@ -18,7 +18,7 @@ export class IntercextionListenerDirective
   @Input() root!: HTMLElement;
   @Input() rootMargin!: string;
   @Input() threshold!: number;
-  @Input() unobserveOnScroll: boolean = false;
+  @Input() unobserveOnReach: boolean = false;
 
   @Output() onScroll = new EventEmitter<boolean>();
   observer!: IntersectionObserver;
@@ -49,7 +49,7 @@ export class IntercextionListenerDirective
         if (entry.isIntersecting) {
           this.onScroll.emit(true);
 
-          if (this.unobserveOnScroll) {
+          if (this.unobserveOnReach) {
             this.observer.unobserve(entry.target);
           }
         }

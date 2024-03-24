@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   AxesHelper,
@@ -13,6 +14,7 @@ import {
   BoxHelper,
   Color,
   Group,
+  LoadingManager,
   Mesh,
   MeshStandardMaterial,
   Object3D,
@@ -32,8 +34,12 @@ import Color4 from 'three/examples/jsm/renderers/common/Color4';
   selector: 'app-viewer3d',
   templateUrl: './viewer3d.component.html',
   styleUrls: ['./viewer3d.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class Viewer3dComponent implements AfterViewInit {
+  public loadedProgress = 0;
+  public loaded = false;
+
   @ViewChild('canvas')
   private canvasRef!: ElementRef<HTMLCanvasElement>;
   @Input() dataSource!: string;
@@ -42,6 +48,23 @@ export class Viewer3dComponent implements AfterViewInit {
   private camera!: PerspectiveCamera;
   private controls!: OrbitControls;
   private renderer!: WebGLRenderer;
+  private loadingManager = new LoadingManager();
+
+  constructor() {
+    this.loadingManager.onStart = (_, loaded, total) => {
+      this.loadedProgress = loaded / total;
+    };
+
+    this.loadingManager.onProgress = (_, loaded, total) => {
+      this.loadedProgress = loaded / total;
+      console.log(loaded, total, this.loadedProgress);
+    };
+
+    this.loadingManager.onLoad = () => {
+      this.loadedProgress = 1;
+      this.loaded = true;
+    };
+  }
 
   private getBox(object: Object3D<Object3DEventMap>) {
     return new Box3().setFromObject(object);
@@ -71,7 +94,7 @@ export class Viewer3dComponent implements AfterViewInit {
   }
 
   private loadMesh() {
-    const gltfLoader = new GLTFLoader();
+    const gltfLoader = new GLTFLoader(this.loadingManager);
     gltfLoader.load(this.dataSource, (gltfScene) => {
       const mesh = gltfScene.scene;
 

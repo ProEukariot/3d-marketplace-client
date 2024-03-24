@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSliderModule } from '@angular/material/slider';
 
 const modules = [
   MatButtonModule,
@@ -22,6 +23,7 @@ const modules = [
   MatDividerModule,
   MatMenuModule,
   MatSnackBarModule,
+  MatSliderModule,
 ];
 
 @NgModule({

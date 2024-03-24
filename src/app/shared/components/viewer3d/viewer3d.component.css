@@ -1,0 +1,11 @@
+.viewer {
+  @apply touch-none flex-1;
+}
+
+.container {
+  @apply w-full h-auto flex relative;
+}
+
+.hide {
+  @apply hidden;
+}

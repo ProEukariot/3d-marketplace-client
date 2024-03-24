@@ -1,0 +1,10 @@
+<label class="btn">
+  {{ label }}
+  <input
+    #target
+    type="file"
+    [multiple]="multiple"
+    (change)="setValue(target.files)"
+    class="hidden"
+  />
+</label>

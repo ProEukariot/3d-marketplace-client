@@ -29,16 +29,16 @@ import { AppDirectivesModule } from '../../directives/app-directives.module';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
-  selector: 'app-dnd-file-input',
-  templateUrl: './dnd-file-input.component.html',
-  styleUrls: ['./dnd-file-input.component.css'],
+  selector: 'app-file-input',
+  templateUrl: './file-input.component.html',
+  styleUrls: ['./file-input.component.css'],
   providers: [
-    { provide: MatFormFieldControl, useExisting: DndFileInputComponent },
+    { provide: MatFormFieldControl, useExisting: FileInputComponent },
   ],
   standalone: true,
   imports: [MaterialModule, ReactiveFormsModule, AppDirectivesModule],
 })
-export class DndFileInputComponent
+export class FileInputComponent
   implements
     MatFormFieldControl<File[] | null>,
     OnInit,
@@ -79,7 +79,7 @@ export class DndFileInputComponent
   stateChanges = new Subject<void>();
 
   @HostBinding()
-  id = `dnd-file-input-id-${DndFileInputComponent.nextId++}`;
+  id = `dnd-file-input-id-${FileInputComponent.nextId++}`;
 
   placeholder!: string;
 

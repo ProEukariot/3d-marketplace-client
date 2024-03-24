@@ -1,90 +1,102 @@
-<form
-  [formGroup]="signupForm"
-  (ngSubmit)="onSubmit()"
-  class="absolute flex flex-col min-w-72 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
->
-  <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input matInput formControlName="username" type="text" />
-    <mat-error *ngIf="signupForm.controls['username'].hasError('required')"
-      >Username required</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['username'].hasError('pattern')"
-      >Username must contain latin chars and digits</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['username'].hasError('minLength')"
-      >Username must be at least 8 chars long</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['username'].hasError('maxLength')"
-      >Username must be less than 20 chars long</mat-error
-    >
-  </mat-form-field>
+<section class="h-screen w-screen flex items-center justify-center p-12">
+  <form
+    [formGroup]="signupForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col flex-1"
+  >
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" type="text" />
+      <!-- User input errors -->
+      <mat-error *ngIf="signupForm.controls['username'].hasError('required')"
+        >Username required</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['username'].hasError('pattern')"
+        >Username must contain latin chars and digits</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['username'].hasError('minLength')"
+        >Username must be at least 8 chars long</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['username'].hasError('maxLength')"
+        >Username must be less than 20 chars long</mat-error
+      >
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" type="text" />
-    <mat-error *ngIf="signupForm.controls['email'].hasError('required')"
-      >Email is required</mat-error
-    ><mat-error *ngIf="signupForm.controls['email'].hasError('email')"
-      >Must be an email</mat-error
-    >
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="text" />
+      <!-- User input errors -->
+      <mat-error *ngIf="signupForm.controls['email'].hasError('required')"
+        >Email is required</mat-error
+      ><mat-error *ngIf="signupForm.controls['email'].hasError('email')"
+        >Must be an email</mat-error
+      >
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input
-      matInput
-      formControlName="password"
-      [type]="hidePwd.pwd ? 'password' : 'text'"
-    />
-    <mat-error *ngIf="signupForm.controls['password'].hasError('required')"
-      >Password required</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['password'].hasError('pattern')"
-      >Password must contain latin chars and digits</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['password'].hasError('minLength')"
-      >Password must be at least 8 chars long</mat-error
-    >
-    <mat-error *ngIf="signupForm.controls['password'].hasError('maxLength')"
-      >Password must be less than 20 chars long</mat-error
-    >
-    <button
-      mat-icon-button
-      matSuffix
-      type="button"
-      (click)="hidePwd.pwd = !hidePwd.pwd"
-    >
-      <mat-icon>{{ hidePwd.pwd ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        appDisplayPassword
+        #pwdInp="appDisplayPassword"
+        matInput
+        formControlName="password"
+      />
+      <!-- User input errors -->
+      <mat-error *ngIf="signupForm.controls['password'].hasError('required')"
+        >Password required</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['password'].hasError('pattern')"
+        >Password must contain latin chars and digits</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['password'].hasError('minlength')"
+        >Password must be at least 8 chars long</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['password'].hasError('maxlength')"
+        >Password must be less than 20 chars long</mat-error
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="pwdInp.toggleVisible()"
+      >
+        <mat-icon>{{
+          pwdInp.isVisible ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Confirm password</mat-label>
-    <input
-      matInput
-      formControlName="confirmPassword"
-      [type]="hidePwd.confirmPwd ? 'password' : 'text'"
-    />
-    <mat-error
-      *ngIf="signupForm.controls['confirmPassword'].hasError('required')"
-      >Confirm password required</mat-error
-    >
-    <mat-error
-      *ngIf="signupForm.controls['confirmPassword'].hasError('noMatch')"
-      >Passwords do not match</mat-error
-    >
-    <button
-      mat-icon-button
-      matSuffix
-      type="button"
-      (click)="hidePwd.confirmPwd = !hidePwd.confirmPwd"
-    >
-      <mat-icon>{{
-        hidePwd.confirmPwd ? "visibility_off" : "visibility"
-      }}</mat-icon>
-    </button>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Confirm password</mat-label>
+      <input
+        appDisplayPassword
+        #confPwdInp="appDisplayPassword"
+        matInput
+        formControlName="confirmPassword"
+      />
+      <!-- User input errors -->
+      <mat-error
+        *ngIf="signupForm.controls['confirmPassword'].hasError('required')"
+        >Confirm password required</mat-error
+      >
+      <mat-error
+        *ngIf="signupForm.controls['confirmPassword'].hasError('noMatch')"
+        >Passwords do not match</mat-error
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="confPwdInp.toggleVisible()"
+      >
+        <mat-icon>{{
+          confPwdInp.isVisible ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
 
-  <button mat-raised-button color="accent">Sign in</button>
-</form>
+    <button mat-raised-button color="accent">Sign in</button>
+
+    <a [routerLink]="['../', 'signin']" class="link">Log in</a>
+  </form>
+</section>

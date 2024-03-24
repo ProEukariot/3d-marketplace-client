@@ -11,7 +11,6 @@ import { AppValidators } from 'src/app/shared/validators/app-validators';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  hidePwd = { pwd: true, confirmPwd: true };
   signupForm!: FormGroup;
 
   constructor(

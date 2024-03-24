@@ -1,1 +1,6 @@
-<canvas #canvas class="w-full h-auto touch-none"></canvas>
+<div class="container">
+  <canvas #canvas class="viewer"></canvas>
+  <span class="absolute-center" [class.hide]="loaded">{{
+    loadedProgress | percent
+  }}</span>
+</div>

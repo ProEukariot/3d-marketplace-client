@@ -11,7 +11,7 @@ import {
   EMPTY,
 } from 'rxjs';
 import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop.directive';
-import { DndFileInputComponent } from 'src/app/shared/components/dnd-file-input/dnd-file-input.component';
+import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,7 +25,7 @@ import { Model3dService } from 'src/app/shared/services/model3d.service';
 })
 export class UploadModelComponent implements OnInit {
   uploadModelForm!: FormGroup;
-  @ViewChild(DndFileInputComponent) dndFileInput!: DndFileInputComponent;
+  @ViewChild(FileInputComponent) dndFileInput!: FileInputComponent;
 
   constructor(
     private readonly http: HttpClient,

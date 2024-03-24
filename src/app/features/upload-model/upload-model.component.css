@@ -5,7 +5,3 @@ mat-error {
 mat-error:first-child {
   @apply block;
 }
-
-/* .file-over::ng-deep .mat-mdc-text-field-wrapper {
-  @apply bg-neutral-200;
-} */

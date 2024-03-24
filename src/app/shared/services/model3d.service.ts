@@ -45,6 +45,18 @@ export class Model3dService {
     );
   }
 
+  getFileMeta(model3dId: string, fileExt: string) {
+    const file = this.http.get<FileMetaDto>(
+      `${this.apiUrl}models/download/${model3dId}/file-meta/${fileExt}`
+    );
+
+    return file;
+  }
+
+  getModel3d(id: string) {
+    return this.http.get<Model3d>(`${this.apiUrl}models/${id}/details`);
+  }
+
   downloadFile(model3dId: string, fileExt: string) {
     const file = this.http.get(
       `${this.apiUrl}models/download/${model3dId}/file/${fileExt}`,

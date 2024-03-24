@@ -30,6 +30,7 @@ const routes: Routes = [
     UploadModelComponent,
     ExploreComponent,
     ModelDetailsComponent,
+    HomeComponent,
     SigninComponent,
     SignupComponent,
   ],
@@ -41,6 +42,6 @@ const routes: Routes = [
     AppComponentsModule,
     AppDirectivesModule,
   ],
-  exports: [RouterModule],
+  exports: [],
 })
 export class AppFeaturesModule {}

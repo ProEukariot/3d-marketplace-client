@@ -1,3 +1,85 @@
-<app-navbar>
-  <router-outlet></router-outlet>
-</app-navbar>
+<header class="fixed z-50 w-full">
+  <mat-toolbar class="bg-white shadow-sm h-[var(--nav-margin)] items-center">
+    <mat-nav-list class="m-0 p-0 hidden flex-1 sm:flex sm:h-full">
+      <ng-container *ngFor="let navLink of navLinks">
+        <a
+          mat-list-item
+          [routerLink]="navLink.path"
+          (click)="sidenav.close()"
+          class="h-full w-auto"
+          >{{ navLink.text }}</a
+        >
+      </ng-container>
+
+      <a
+        *ngIf="!isLoggedIn; else loggedInTemplate"
+        mat-list-item
+        routerLink="/auth/signin"
+        (click)="sidenav.close()"
+        class="h-full w-auto ms-auto"
+        >Log in</a
+      >
+      <ng-template #loggedInTemplate>
+        <a
+          mat-list-item
+          (click)="sidenav.close(); logout()"
+          class="h-full w-auto ms-auto"
+          >Log out</a
+        >
+        <a
+          mat-list-item
+          routerLink="/profile"
+          (click)="sidenav.close()"
+          class="h-full w-auto"
+          >Profile</a
+        >
+      </ng-template>
+    </mat-nav-list>
+    <button
+      mat-icon-button
+      (click)="sidenav.toggle()"
+      class="ms-auto sm:hidden"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+</header>
+
+<mat-sidenav-container class="min-h-screen bg-zinc-100">
+  <mat-sidenav
+    #sidenav
+    position="end"
+    [autoFocus]="false"
+    class="fixed top-[var(--nav-margin)] w-48"
+  >
+    <mat-nav-list class="m-0 p-0">
+      <ng-container *ngFor="let navLink of navLinks">
+        <a
+          mat-list-item
+          [routerLink]="navLink.path"
+          (click)="sidenav.close()"
+          >{{ navLink.text }}</a
+        >
+      </ng-container>
+
+      <a
+        *ngIf="!isLoggedIn; else loggedInSideTemplate"
+        mat-list-item
+        routerLink="/auth/signin"
+        (click)="sidenav.close()"
+        >Log in</a
+      >
+      <ng-template #loggedInSideTemplate>
+        <a mat-list-item (click)="sidenav.close(); logout()">Log out</a>
+        <a mat-list-item routerLink="/profile" (click)="sidenav.close()"
+          >Profile</a
+        >
+      </ng-template>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

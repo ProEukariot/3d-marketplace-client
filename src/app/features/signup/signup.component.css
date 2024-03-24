@@ -1,7 +1,7 @@
 mat-error {
-    @apply hidden;
-  }
-  
-  mat-error:first-child {
-    @apply block;
-  }
+  @apply hidden;
+}
+
+mat-error:first-child {
+  @apply block;
+}

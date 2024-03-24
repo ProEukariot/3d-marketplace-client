@@ -1,103 +1,107 @@
-<form
-  [formGroup]="uploadModelForm"
-  (ngSubmit)="onSubmit()"
-  class="flex flex-col m-4"
->
-  <!-- Name input -->
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input
-      #nameInput
-      matInput
-      type="text"
-      maxlength="20"
-      formControlName="name"
-    />
-    <mat-hint align="end">{{ nameInput.value.length }}/20</mat-hint>
-    <!-- Errors -->
-    <mat-error *ngIf="uploadModelForm.controls['name'].hasError('required')"
-      >Name is required</mat-error
-    >
-    <mat-error *ngIf="uploadModelForm.controls['name'].hasError('pattern')"
-      >Name should only contain Latin characters, numbers, hyphens, and
-      underscores
-    </mat-error>
-  </mat-form-field>
-  <!--  -->
-
-  <!-- Amount input -->
-  <mat-form-field>
-    <mat-label>Amount</mat-label>
-    <input
-      matInput
-      min="0"
-      max="99999"
-      type="number"
-      formControlName="amount"
-    />
-    <span matTextSuffix class="ms-2">$&nbsp;</span>
-    <!-- Errors -->
-    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('required')"
-      >Amount is required</mat-error
-    >
-    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('min')"
-      >Minimum value is 0</mat-error
-    >
-    <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('max')"
-      >Maximum value is 99999</mat-error
-    >
-  </mat-form-field>
-  <!--  -->
-
-  <!-- Files input -->
-  <mat-form-field
-    dragAndDrop
-    (fileDropped)="onFileDropped($event)"
-    (dragover)="onDragOver()"
-    (dragleave)="onDragLeave()"
+<section class="p-4 mt-[var(--nav-margin)]">
+  <form
+    [formGroup]="uploadModelForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col"
   >
-    <app-dnd-file-input
-      #fileInput
-      formControlName="files"
-      [required]="true"
-      [multiple]="true"
-      accept=".glb"
-      mode="stack"
-    ></app-dnd-file-input>
-    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('required')"
-      >Files are required</mat-error
-    >
-    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('acceptExt')">
-      This file extensions are not supported</mat-error
-    >
-    <mat-error *ngIf="uploadModelForm.controls['files'].hasError('uniqueExt')"
-      >Same file extensions are not allowed</mat-error
-    >
-  </mat-form-field>
-
-  <mat-action-list>
-    <mat-list-item
-      *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
-    >
-      <span>{{ file.name }}</span>
-      <button
-        mat-icon-button
-        matListItemMeta
-        type="button"
-        (click)="fileInput.removeFileAt(i)"
+    <!-- Name input -->
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        #nameInput
+        matInput
+        type="text"
+        maxlength="20"
+        formControlName="name"
+      />
+      <mat-hint align="end">{{ nameInput.value.length }}/20</mat-hint>
+      <!-- Errors -->
+      <mat-error *ngIf="uploadModelForm.controls['name'].hasError('required')"
+        >Name is required</mat-error
       >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-list-item>
-  </mat-action-list>
+      <mat-error *ngIf="uploadModelForm.controls['name'].hasError('pattern')"
+        >Name should only contain Latin characters, numbers, hyphens, and
+        underscores
+      </mat-error>
+    </mat-form-field>
+    <!--  -->
 
-  <button
-    mat-raised-button
-    type="submit"
-    color="accent"
-    type="submit"
-    class="p-6"
-  >
-    Upload model
-  </button>
-</form>
+    <!-- Amount input -->
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        min="0"
+        max="99999"
+        type="number"
+        formControlName="amount"
+      />
+      <span matTextSuffix class="ms-2">$&nbsp;</span>
+      <!-- Errors -->
+      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('required')"
+        >Amount is required</mat-error
+      >
+      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('min')"
+        >Minimum value is 0</mat-error
+      >
+      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('max')"
+        >Maximum value is 99999</mat-error
+      >
+    </mat-form-field>
+    <!--  -->
+
+    <!-- Files input -->
+    <mat-form-field
+      dragAndDrop
+      (fileDropped)="onFileDropped($event)"
+      (dragover)="onDragOver()"
+      (dragleave)="onDragLeave()"
+    >
+      <app-file-input
+        #fileInput
+        formControlName="files"
+        [required]="true"
+        [multiple]="true"
+        accept=".glb"
+        mode="stack"
+      ></app-file-input>
+      <mat-error *ngIf="uploadModelForm.controls['files'].hasError('required')"
+        >Files are required</mat-error
+      >
+      <mat-error
+        *ngIf="uploadModelForm.controls['files'].hasError('acceptExt')"
+      >
+        This file extensions are not supported</mat-error
+      >
+      <mat-error *ngIf="uploadModelForm.controls['files'].hasError('uniqueExt')"
+        >Same file extensions are not allowed</mat-error
+      >
+    </mat-form-field>
+
+    <mat-action-list>
+      <mat-list-item
+        *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
+      >
+        <span>{{ file.name }}</span>
+        <button
+          mat-icon-button
+          matListItemMeta
+          type="button"
+          (click)="fileInput.removeFileAt(i)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-action-list>
+
+    <button
+      mat-raised-button
+      type="submit"
+      color="accent"
+      type="submit"
+      class="p-6"
+    >
+      Upload model
+    </button>
+  </form>
+</section>

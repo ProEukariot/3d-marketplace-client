@@ -6,10 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { AppFeaturesModule } from './features/app-features.module';
-import { LayoutModule } from './layout/layout.module';
 import { AppDirectivesModule } from './shared/directives/app-directives.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth-interseptor';
+import { AppComponentsModule } from './shared/components/app-components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,9 +18,9 @@ import { AuthInterceptor } from './shared/interceptors/auth-interseptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    LayoutModule,
     AppFeaturesModule,
     HttpClientModule,
+    AppComponentsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

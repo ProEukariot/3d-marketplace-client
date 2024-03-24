@@ -1,53 +1,58 @@
-<form
-  [formGroup]="signinForm"
-  (ngSubmit)="onSubmit()"
-  class="absolute flex flex-col min-w-72 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
->
-  <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input matInput formControlName="username" type="text" />
-    <mat-error *ngIf="signinForm.controls['username'].hasError('required')"
-      >Username required</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['username'].hasError('pattern')"
-      >Username must contain latin chars and digits</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['username'].hasError('minLength')"
-      >Username must be at least 8 chars long</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['username'].hasError('maxLength')"
-      >Username must be less than 20 chars long</mat-error
-    >
-  </mat-form-field>
+<section class="h-screen w-screen flex items-center justify-center p-12">
+  <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="flex flex-col flex-1">
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" type="text" />
+      <!-- User input errors -->
+      <mat-error *ngIf="signinForm.controls['username'].hasError('required')"
+        >Username required</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['username'].hasError('pattern')"
+        >Username must contain latin chars and digits</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['username'].hasError('minlength')"
+        >Username must be at least 8 chars long</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['username'].hasError('maxlength')"
+        >Username must be less than 20 chars long</mat-error
+      >
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input
-      matInput
-      formControlName="password"
-      [type]="hidePwd ? 'password' : 'text'"
-    />
-    <mat-error *ngIf="signinForm.controls['password'].hasError('required')"
-      >Password required</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['password'].hasError('pattern')"
-      >Password must contain latin chars and digits</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['password'].hasError('minLength')"
-      >Password must be at least 8 chars long</mat-error
-    >
-    <mat-error *ngIf="signinForm.controls['password'].hasError('maxLength')"
-      >Password must be less than 20 chars long</mat-error
-    >
-    <button
-      mat-icon-button
-      matSuffix
-      type="button"
-      (click)="hidePwd = !hidePwd"
-    >
-      <mat-icon>{{ hidePwd ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        appDisplayPassword
+        #pwdInp="appDisplayPassword"
+        matInput
+        formControlName="password"
+      />
+      <!-- User input errors -->
+      <mat-error *ngIf="signinForm.controls['password'].hasError('required')"
+        >Password required</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['password'].hasError('pattern')"
+        >Password must contain latin chars and digits</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['password'].hasError('minlength')"
+        >Password must be at least 8 chars long</mat-error
+      >
+      <mat-error *ngIf="signinForm.controls['password'].hasError('maxlength')"
+        >Password must be less than 20 chars long</mat-error
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="pwdInp.toggleVisible()"
+      >
+        <mat-icon>{{
+          pwdInp.isVisible ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
 
-  <button mat-raised-button color="accent">Sign in</button>
-</form>
+    <button mat-raised-button color="accent">Sign in</button>
+
+    <a [routerLink]="['../', 'signup']" class="link">Sign up</a>
+  </form>
+</section>

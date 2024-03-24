@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./signin.component.css'],
 })
 export class SigninComponent {
-  hidePwd = true;
   signinForm!: FormGroup;
 
   constructor(

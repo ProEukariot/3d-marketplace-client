@@ -5,9 +5,9 @@
 <section>
   <div>
     <ng-container *ngFor="let file of availableFiles">
+      <!-- [disabled]="!isLoggedIn" -->
       <button
         mat-raised-button
-        [disabled]="!isLoggedIn"
         (click)="onFileDownload(file.ext)"
         class="my-2 mx-4"
       >

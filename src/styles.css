@@ -3,18 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --navbar-margin: 4rem;
+  --nav-margin: 4rem;
 }
 
 html,
 body {
-  min-height: 100%;
+  @apply min-h-full;
 }
+
 body {
-  margin: 0;
+  @apply m-0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-/* 
-body{
-    height: 10000px;
-} */
+
+.link {
+  @apply underline;
+}
+
+.absolute-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@layer components {
+  .btn {
+    @apply flex items-center justify-center rounded-xl bg-black text-white text-center cursor-pointer select-none p-4 px-8;
+  }
+}
