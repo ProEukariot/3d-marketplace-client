@@ -11,6 +11,10 @@ body {
   @apply min-h-full;
 }
 
+* {
+  @apply font-normal text-base m-0 p-0 box-border;
+}
+
 body {
   @apply m-0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -26,6 +30,6 @@ body {
 
 @layer components {
   .btn {
-    @apply flex items-center justify-center rounded-xl bg-black text-white text-center cursor-pointer select-none p-4 px-8;
+    @apply flex items-center justify-center rounded-xl bg-black text-white text-center cursor-pointer select-none p-2 px-4;
   }
 }
