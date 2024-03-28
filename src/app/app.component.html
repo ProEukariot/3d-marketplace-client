@@ -18,13 +18,14 @@
 
   <mat-sidenav-content>
     <header class="fixed z-50 w-full">
-      <mat-toolbar
-        class="bg-white shadow-sm h-[var(--nav-margin)] items-center justify-center"
-      >
-        <div class="flex items-center h-full flex-1 max-w-4xl">
-          <div class="flex items-center justify-center me-4">
+      <mat-toolbar class="bg-white shadow-sm h-nav items-center justify-center">
+        <div class="flex items-center h-full flex-1 max-w-6xl">
+          <a
+            routerLink="/"
+            class="flex items-center justify-center h-full cursor-pointer p-4"
+          >
             <mat-icon>eco</mat-icon>
-          </div>
+          </a>
 
           <div class="hidden h-full sm:flex sm:items-center">
             <ng-container *ngTemplateOutlet="navListTemplate"></ng-container>
@@ -49,17 +50,19 @@
 </mat-sidenav-container>
 
 <ng-template #navListTemplate>
-  <mat-nav-list class="flex flex-col p-0 sm:h-full sm:flex-row sm:items-center">
+  <nav class="flex flex-col p-0 sm:h-full sm:flex-row sm:items-center">
     <ng-container *ngFor="let navLink of navLinks">
       <a
         mat-list-item
+        mat-ripple
         [routerLink]="navLink.path"
         (click)="sidenav.close()"
-        class="sm:h-full sm:w-auto"
-        >{{ navLink.text }}</a
+        class="px-4 h-12 flex items-center sm:h-full sm:w-auto sm:justify-center hover:bg-zinc-100"
       >
+        <span>{{ navLink.text }}</span>
+      </a>
     </ng-container>
-  </mat-nav-list>
+  </nav>
 </ng-template>
 
 <ng-template #profileTemplate>
@@ -75,12 +78,12 @@
     *ngIf="isLoggedIn"
     mat-ripple
     [matMenuTriggerFor]="profileMenu"
-    class="px-4 text-start h-12 w-full sm:h-full sm:w-auto sm:text-center"
+    class="px-4 text-start h-12 w-full sm:h-full sm:w-auto sm:text-center hover:bg-zinc-100"
   >
     Profile
   </button>
-  <mat-menu #profileMenu="matMenu" xPosition="before">
+  <mat-menu #profileMenu="matMenu" xPosition="before" class="rounded-xl">
     <a mat-menu-item routerLink="/profile" (click)="sidenav.close()">Models</a>
     <button mat-menu-item (click)="sidenav.close(); logout()">Log out</button>
-  </mat-menu></ng-template
->
+  </mat-menu>
+</ng-template>

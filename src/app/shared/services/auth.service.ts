@@ -5,6 +5,8 @@ import { Token } from '../types/token';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 
+export const TOKEN = 'ACCESS_TOKEN';
+
 export type RegisterDto = {
   username: string;
   email: string;
@@ -23,7 +25,7 @@ export type LoginDto = {
 export class AuthService {
   private apiUrl = environment.apiUrl;
   private isLoggedInSubject = new BehaviorSubject(
-    !!this.localService.get('access_token')
+    !!this.localService.get(TOKEN)
   );
 
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
@@ -34,7 +36,7 @@ export class AuthService {
   ) {}
 
   getToken() {
-    return this.localService.get('access_token');
+    return this.localService.get(TOKEN);
   }
 
   signUp(userDto: RegisterDto) {
@@ -46,12 +48,12 @@ export class AuthService {
   }
 
   saveToken(token: Token) {
-    this.localService.set('access_token', token.value);
+    this.localService.set(TOKEN, token.value);
     this.isLoggedInSubject.next(true);
   }
 
   clearToken() {
-    this.localService.remove('access_token');
+    this.localService.remove(TOKEN);
     this.isLoggedInSubject.next(false);
   }
 }

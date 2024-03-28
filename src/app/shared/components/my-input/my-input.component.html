@@ -1,0 +1,20 @@
+<div
+  (click)="inp.focus()"
+  class="flex items-center justify-start rounded-xl bg-white shadow-sm shadow-zinc-400 cursor-pointer transition-all p-2 px-4 focus-within:shadow-lg"
+>
+  <input
+    #inp
+    [type]="type"
+    (focus)="labelFocused = true"
+    [ngModel]="value"
+    (ngModelChange)="setValue($event)"
+    (blur)="labelFocused = false"
+    class="overflow-hidden outline-none transition-all"
+    [class.flex-1]="labelFocused || value"
+  />
+  <label
+    class="flex-initial whitespace-nowrap pointer-events-none select-none"
+    >{{ label }}</label
+  >
+  <!-- [class.ps-4]="(labelFocused || value) && label" -->
+</div>

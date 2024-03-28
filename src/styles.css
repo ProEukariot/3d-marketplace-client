@@ -6,13 +6,29 @@
   --nav-margin: 4rem;
 }
 
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-400/50 rounded-lg;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-400;
+}
+
 html,
 body {
   @apply min-h-full;
 }
 
 * {
-  @apply font-normal text-base m-0 p-0 box-border;
+  @apply font-normal text-base m-0 p-0 box-border bg-transparent;
 }
 
 body {
@@ -21,7 +37,7 @@ body {
 }
 
 .link {
-  @apply underline;
+  @apply underline select-none;
 }
 
 .absolute-center {
@@ -30,6 +46,26 @@ body {
 
 @layer components {
   .btn {
-    @apply flex items-center justify-center rounded-xl bg-black text-white text-center cursor-pointer select-none p-2 px-4;
+    @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-black text-white text-center cursor-pointer select-none transition-all p-2 px-4;
   }
+
+  .btn:hover {
+    @apply shadow-lg;
+  }
+}
+
+mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__surface {
+  @apply rounded-xl bg-red-50/50 border border-solid border-red-500 text-red-500;
+}
+
+mat-snack-bar-container.mdc-snackbar .mat-mdc-snack-bar-label {
+  @apply p-2 m-0;
+}
+
+mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__label {
+  @apply text-red-500 transition-all;
+}
+
+mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__label button:hover {
+  @apply text-red-500/50;
 }

@@ -15,13 +15,26 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: 'profile', component: UserProfileComponent },
-  { path: 'explore', component: ExploreComponent },
-  { path: 'explore/:id', component: ModelDetailsComponent },
-  { path: 'upload-model', component: UploadModelComponent },
-  { path: 'auth/signin', component: SigninComponent },
-  { path: 'auth/signup', component: SignupComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'profile', component: UserProfileComponent },
+  // { path: 'explore', component: ExploreComponent },
+  // { path: 'explore/:id', component: ModelDetailsComponent },
+  {
+    path: 'explore',
+    children: [
+      { path: '', component: ExploreComponent },
+      { path: ':id', component: ModelDetailsComponent },
+    ],
+  },
+  { path: 'upload-model', component: UploadModelComponent },
+  {
+    path: 'auth',
+    children: [
+      { path: 'signin', component: SigninComponent },
+      { path: 'signup', component: SignupComponent },
+    ],
+  },
 ];
 
 @NgModule({

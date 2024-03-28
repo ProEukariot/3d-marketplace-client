@@ -5,8 +5,8 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
-      colors: {
-        danger: "#e11d48",
+      spacing: {
+        nav: "4rem",
       },
     },
   },

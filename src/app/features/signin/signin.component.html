@@ -1,58 +1,62 @@
-<section class="h-screen w-screen flex items-center justify-center p-12">
-  <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="flex flex-col flex-1">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput formControlName="username" type="text" />
-      <!-- User input errors -->
-      <mat-error *ngIf="signinForm.controls['username'].hasError('required')"
-        >Username required</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['username'].hasError('pattern')"
-        >Username must contain latin chars and digits</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['username'].hasError('minlength')"
-        >Username must be at least 8 chars long</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['username'].hasError('maxlength')"
-        >Username must be less than 20 chars long</mat-error
-      >
-    </mat-form-field>
+<section
+  class="h-screen w-screen flex flex-col items-center justify-center p-12"
+>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col relative max-w-80"
+  >
+    <app-my-input
+      formControlName="username"
+      label="Username"
+      class="mb-4"
+    ></app-my-input>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input
-        appDisplayPassword
-        #pwdInp="appDisplayPassword"
-        matInput
-        formControlName="password"
-      />
-      <!-- User input errors -->
-      <mat-error *ngIf="signinForm.controls['password'].hasError('required')"
-        >Password required</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['password'].hasError('pattern')"
-        >Password must contain latin chars and digits</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['password'].hasError('minlength')"
-        >Password must be at least 8 chars long</mat-error
-      >
-      <mat-error *ngIf="signinForm.controls['password'].hasError('maxlength')"
-        >Password must be less than 20 chars long</mat-error
-      >
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        (click)="pwdInp.toggleVisible()"
-      >
-        <mat-icon>{{
-          pwdInp.isVisible ? "visibility_off" : "visibility"
-        }}</mat-icon>
-      </button>
-    </mat-form-field>
+    <app-my-input
+      formControlName="password"
+      label="Password"
+      type="password"
+      class="mb-4"
+    ></app-my-input>
 
-    <button mat-raised-button color="accent">Sign in</button>
+    <button type="submit" class="btn">Log in</button>
 
     <a [routerLink]="['../', 'signup']" class="link">Sign up</a>
+
+    <div class="relative mt-2">
+      <div
+        *ngIf="form.invalid && formSubmitted"
+        class="absolute top-0 left-0 w-full bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 err"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <!-- Username errors -->
+          <li *ngIf="hasError('username', 'required')" class="text-sm">
+            Username required
+          </li>
+          <li *ngIf="hasError('username', 'minlength')" class="text-sm">
+            Username must be at least 8 chars long
+          </li>
+          <li *ngIf="hasError('username', 'maxlength')" class="text-sm">
+            Username must be less than 20 chars long
+          </li>
+          <li *ngIf="hasError('username', 'pattern')" class="text-sm">
+            Username must contain latin chars and digits
+          </li>
+          <!-- Password errors -->
+          <li *ngIf="hasError('password', 'required')" class="text-sm">
+            Password required
+          </li>
+          <li *ngIf="hasError('password', 'minlength')" class="text-sm">
+            Password must be at least 8 chars long
+          </li>
+          <li *ngIf="hasError('password', 'maxlength')" class="text-sm">
+            Username must be less than 20 chars long
+          </li>
+          <li *ngIf="hasError('password', 'pattern')" class="text-sm">
+            Password must contain latin chars and digits
+          </li>
+        </ul>
+      </div>
+    </div>
   </form>
 </section>
