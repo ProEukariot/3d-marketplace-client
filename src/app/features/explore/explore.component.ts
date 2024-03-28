@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, concat, from, of } from 'rxjs';
 import { IntercextionListenerDirective } from 'src/app/shared/directives/intercextion-listener.directive';
 import { Model3d } from 'src/app/shared/models/model3d';
 import { Model3dService } from 'src/app/shared/services/model3d.service';
@@ -16,7 +15,7 @@ export class ExploreComponent implements OnInit {
 
   isFetching: boolean = false;
 
-  @ViewChild(IntercextionListenerDirective)
+  @ViewChild(IntercextionListenerDirective, { static: true })
   intercextionListenerDirective!: IntercextionListenerDirective;
 
   constructor(

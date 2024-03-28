@@ -21,12 +21,14 @@
 
     <button type="submit" class="btn">Log in</button>
 
-    <a [routerLink]="['../', 'signup']" class="link">Sign up</a>
+    <a [routerLink]="['../', 'signup']" [replaceUrl]="true" class="link"
+      >Sign up</a
+    >
 
     <div class="relative mt-2">
       <div
         *ngIf="form.invalid && formSubmitted"
-        class="absolute top-0 left-0 w-full bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 err"
+        class="absolute top-0 left-0 w-full bg-red-50/50 border border-red-500 border-solid rounded-xl p-2"
       >
         <ul class="text-red-500 list-disc list-inside ps-2">
           <!-- Username errors -->

@@ -49,9 +49,9 @@ body {
     @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-black text-white text-center cursor-pointer select-none transition-all p-2 px-4;
   }
 
-  .btn:hover {
+  /* .btn:hover {
     @apply shadow-lg;
-  }
+  } */
 }
 
 mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__surface {
@@ -68,4 +68,16 @@ mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__label {
 
 mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__label button:hover {
   @apply text-red-500/50;
+}
+
+mat-card.mat-mdc-card {
+  @apply rounded-3xl shadow-sm transition-all;
+}
+
+mat-card.mat-mdc-card:hover {
+  @apply rounded-3xl shadow-lg -translate-y-2;
+}
+
+mat-card-header.mat-mdc-card-header {
+  @apply p-2 px-4 select-none;
 }

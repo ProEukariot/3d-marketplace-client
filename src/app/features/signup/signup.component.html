@@ -1,102 +1,90 @@
-<section class="h-screen w-screen flex items-center justify-center p-12">
+<section
+  class="h-screen w-screen flex flex-col items-center justify-center p-12"
+>
   <form
-    [formGroup]="signupForm"
+    [formGroup]="form"
     (ngSubmit)="onSubmit()"
-    class="flex flex-col flex-1"
+    class="flex flex-col relative max-w-80"
   >
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput formControlName="username" type="text" />
-      <!-- User input errors -->
-      <mat-error *ngIf="signupForm.controls['username'].hasError('required')"
-        >Username required</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['username'].hasError('pattern')"
-        >Username must contain latin chars and digits</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['username'].hasError('minLength')"
-        >Username must be at least 8 chars long</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['username'].hasError('maxLength')"
-        >Username must be less than 20 chars long</mat-error
-      >
-    </mat-form-field>
+    <app-my-input
+      formControlName="username"
+      label="Username"
+      class="mb-4"
+    ></app-my-input>
 
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="text" />
-      <!-- User input errors -->
-      <mat-error *ngIf="signupForm.controls['email'].hasError('required')"
-        >Email is required</mat-error
-      ><mat-error *ngIf="signupForm.controls['email'].hasError('email')"
-        >Must be an email</mat-error
-      >
-    </mat-form-field>
+    <app-my-input
+      formControlName="email"
+      label="Email"
+      type="text"
+      class="mb-4"
+    ></app-my-input>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input
-        appDisplayPassword
-        #pwdInp="appDisplayPassword"
-        matInput
-        formControlName="password"
-      />
-      <!-- User input errors -->
-      <mat-error *ngIf="signupForm.controls['password'].hasError('required')"
-        >Password required</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['password'].hasError('pattern')"
-        >Password must contain latin chars and digits</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['password'].hasError('minlength')"
-        >Password must be at least 8 chars long</mat-error
-      >
-      <mat-error *ngIf="signupForm.controls['password'].hasError('maxlength')"
-        >Password must be less than 20 chars long</mat-error
-      >
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        (click)="pwdInp.toggleVisible()"
-      >
-        <mat-icon>{{
-          pwdInp.isVisible ? "visibility_off" : "visibility"
-        }}</mat-icon>
-      </button>
-    </mat-form-field>
+    <app-my-input
+      formControlName="password"
+      label="Password"
+      type="password"
+      class="mb-4"
+    ></app-my-input>
 
-    <mat-form-field>
-      <mat-label>Confirm password</mat-label>
-      <input
-        appDisplayPassword
-        #confPwdInp="appDisplayPassword"
-        matInput
-        formControlName="confirmPassword"
-      />
-      <!-- User input errors -->
-      <mat-error
-        *ngIf="signupForm.controls['confirmPassword'].hasError('required')"
-        >Confirm password required</mat-error
-      >
-      <mat-error
-        *ngIf="signupForm.controls['confirmPassword'].hasError('noMatch')"
-        >Passwords do not match</mat-error
-      >
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        (click)="confPwdInp.toggleVisible()"
-      >
-        <mat-icon>{{
-          confPwdInp.isVisible ? "visibility_off" : "visibility"
-        }}</mat-icon>
-      </button>
-    </mat-form-field>
+    <app-my-input
+      formControlName="confirmPassword"
+      label="Confirm Password"
+      type="password"
+      class="mb-4"
+    ></app-my-input>
 
-    <button mat-raised-button color="accent">Sign in</button>
+    <button type="submit" class="btn">Log in</button>
 
-    <a [routerLink]="['../', 'signin']" class="link">Log in</a>
+    <a [routerLink]="['../', 'signin']" [replaceUrl]="true" class="link">Sign in</a>
+
+    <div class="relative mt-2">
+      <div
+        *ngIf="form.invalid && formSubmitted"
+        class="absolute top-0 left-0 w-full bg-red-50/50 border border-red-500 border-solid rounded-xl p-2"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <!-- Username errors -->
+          <li *ngIf="hasError('username', 'required')" class="text-sm">
+            Username required
+          </li>
+          <li *ngIf="hasError('username', 'minlength')" class="text-sm">
+            Username must be at least 8 chars long
+          </li>
+          <li *ngIf="hasError('username', 'maxlength')" class="text-sm">
+            Username must be less than 20 chars long
+          </li>
+          <li *ngIf="hasError('username', 'pattern')" class="text-sm">
+            Username must contain latin chars and digits
+          </li>
+          <!-- Email errors -->
+          <li *ngIf="hasError('email', 'required')" class="text-sm">
+            Email required
+          </li>
+          <li *ngIf="hasError('email', 'email')" class="text-sm">
+            Must be an email
+          </li>
+          <!-- Password errors -->
+          <li *ngIf="hasError('password', 'required')" class="text-sm">
+            Password required
+          </li>
+          <li *ngIf="hasError('password', 'minlength')" class="text-sm">
+            Password must be at least 8 chars long
+          </li>
+          <li *ngIf="hasError('password', 'maxlength')" class="text-sm">
+            Username must be less than 20 chars long
+          </li>
+          <li *ngIf="hasError('password', 'pattern')" class="text-sm">
+            Password must contain latin chars and digits
+          </li>
+          <!-- Confirm password errors -->
+          <li *ngIf="hasError('confirmPassword', 'required')" class="text-sm">
+            Confirm password required
+          </li>
+          <li *ngIf="hasError('confirmPassword', 'noMatch')" class="text-sm">
+            Passwords do not match
+          </li>
+        </ul>
+      </div>
+    </div>
   </form>
 </section>

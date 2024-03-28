@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 
 @Component({
@@ -10,15 +12,54 @@ import { AppValidators } from 'src/app/shared/validators/app-validators';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignupComponent {
-  signupForm!: FormGroup;
+export class SignupComponent implements OnInit {
+  form!: FormGroup;
+  formSubmitted = false;
 
   constructor(
     private readonly authService: AuthService,
-    private readonly localService: LocalStorageService,
-    private readonly router: Router
-  ) {
-    this.signupForm = new FormGroup(
+    private readonly router: Router,
+    private readonly notificationService: NotificationService
+  ) {}
+
+  onSubmit() {
+    this.formSubmitted = true;
+
+    if (this.form.invalid) return;
+
+    const formValue = this.form.value;
+
+    this.authService
+      .signUp({
+        username: formValue.username,
+        email: formValue.email,
+        password: formValue.password,
+        confirmPassword: formValue.confirmPassword,
+      })
+      .subscribe(
+        (token) => {
+          this.authService.saveToken(token);
+          this.router.navigateByUrl('/explore', { replaceUrl: true });
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error);
+          if (error.status == 400)
+            this.notificationService.showNotification(
+              error.error.message[0],
+              'error'
+            );
+        }
+      );
+  }
+
+  hasError(controlName: string, error: string) {
+    return (
+      this.form.controls[controlName].hasError(error) && this.formSubmitted
+    );
+  }
+
+  ngOnInit(): void {
+    this.form = new FormGroup(
       {
         username: new FormControl('', [
           Validators.required,
@@ -37,28 +78,5 @@ export class SignupComponent {
       },
       { validators: AppValidators.match('confirmPassword', 'password') }
     );
-  }
-
-  onSubmit() {
-    if (this.signupForm.invalid) return;
-
-    const formValues = this.signupForm.value;
-
-    this.authService
-      .signUp({
-        username: formValues.username,
-        email: formValues.email,
-        password: formValues.password,
-        confirmPassword: formValues.confirmPassword,
-      })
-      .subscribe(
-        (token) => {
-          this.authService.saveToken(token);
-          this.router.navigateByUrl('/explore', { replaceUrl: true });
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
   }
 }
