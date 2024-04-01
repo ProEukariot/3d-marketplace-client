@@ -1,10 +1,164 @@
-<section class="p-4 mt-[var(--nav-margin)]">
+<section class="mt-nav p-4">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- title input -->
+    <div>
+      <app-my-input formControlName="title" label="Title"></app-my-input>
+
+      <div
+        *ngIf="hasError('title')"
+        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <li
+            *ngIf="form.controls['title'].hasError('required')"
+            class="text-sm"
+          >
+            Title is required
+          </li>
+          <li
+            *ngIf="form.controls['title'].hasError('pattern')"
+            class="text-sm"
+          >
+            Title must contain latin chars and digits
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- material files input -->
+    <div>
+      <div
+        dragAndDrop
+        (fileDropped)="materialInp.setValue($event.files)"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl mt-4 drop-area sm:flex-row"
+      >
+        <span class="p-2">Drop materials or</span>
+        <app-my-file-input
+          #materialInp
+          [multiple]="true"
+          mode="push"
+          formControlName="materials"
+          label="Choose files"
+        ></app-my-file-input>
+      </div>
+
+      <div
+        *ngIf="hasError('materials')"
+        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <li
+            *ngIf="form.controls['materials'].hasError('acceptExt')"
+            class="text-sm"
+          >
+            We accept only .png, .jpg, .jpeg files
+          </li>
+          <li
+            *ngIf="form.controls['materials'].hasError('maxArrayLength')"
+            class="text-sm"
+          >
+            Max files number is 20
+          </li>
+        </ul>
+      </div>
+
+      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-4">
+        <li
+          *ngFor="let material of form.controls['materials'].value; index as i"
+          class="p-2 px-4"
+        >
+          <div class="flex items-center justify-between">
+            <span>{{ material.name }}</span>
+            <button
+              mat-icon-button
+              (click)="materialInp.removeAt(i)"
+              class="icon-btn-sm"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 3d models file input -->
+    <div>
+      <div
+        dragAndDrop
+        (fileDropped)="modelsInp.setValue($event.files)"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl mt-4 drop-area sm:flex-row"
+      >
+        <span class="p-2">Drop models or</span>
+        <app-my-file-input
+          #modelsInp
+          [multiple]="true"
+          mode="push"
+          formControlName="models"
+          label="Choose files"
+        ></app-my-file-input>
+      </div>
+
+      <div
+        *ngIf="hasError('models')"
+        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <li
+            *ngIf="form.controls['models'].hasError('required')"
+            class="text-sm"
+          >
+            Files are required
+          </li>
+          <li
+            *ngIf="form.controls['models'].hasError('uniqueExt')"
+            class="text-sm"
+          >
+            Same extensions are not allowed
+          </li>
+          <li
+            *ngIf="form.controls['models'].hasError('acceptExt')"
+            class="text-sm"
+          >
+            We accept only .glb, .obj, .fbx files
+          </li>
+          <li
+            *ngIf="form.controls['models'].hasError('maxArrayLength')"
+            class="text-sm"
+          >
+            Max files number is 20
+          </li>
+        </ul>
+      </div>
+
+      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-4">
+        <li
+          *ngFor="let model of form.controls['models'].value; index as i"
+          class="p-2 px-4"
+        >
+          <div class="flex items-center justify-between">
+            <span>{{ model.name }}</span>
+            <button
+              mat-icon-button
+              (click)="modelsInp.removeAt(i)"
+              class="icon-btn-sm"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit" class="btn">Upload</button>
+  </form>
+</section>
+
+<!-- <section class="p-4 mt-[var(--nav-margin)]">
   <form
     [formGroup]="uploadModelForm"
     (ngSubmit)="onSubmit()"
     class="flex flex-col"
   >
-    <!-- Name input -->
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input
@@ -15,7 +169,6 @@
         formControlName="name"
       />
       <mat-hint align="end">{{ nameInput.value.length }}/20</mat-hint>
-      <!-- Errors -->
       <mat-error *ngIf="uploadModelForm.controls['name'].hasError('required')"
         >Name is required</mat-error
       >
@@ -24,9 +177,7 @@
         underscores
       </mat-error>
     </mat-form-field>
-    <!--  -->
 
-    <!-- Amount input -->
     <mat-form-field>
       <mat-label>Amount</mat-label>
       <input
@@ -37,7 +188,6 @@
         formControlName="amount"
       />
       <span matTextSuffix class="ms-2">$&nbsp;</span>
-      <!-- Errors -->
       <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('required')"
         >Amount is required</mat-error
       >
@@ -48,9 +198,7 @@
         >Maximum value is 99999</mat-error
       >
     </mat-form-field>
-    <!--  -->
 
-    <!-- Files input -->
     <mat-form-field
       dragAndDrop
       (fileDropped)="onFileDropped($event)"
@@ -104,4 +252,4 @@
       Upload model
     </button>
   </form>
-</section>
+</section> -->

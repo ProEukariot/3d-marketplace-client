@@ -40,6 +40,8 @@ export class DragAndDropDirective {
     event.preventDefault();
     event.stopPropagation();
 
+    this.fileOver = false;
+
     const files = event.dataTransfer?.files;
 
     if (files && files.length > 0) {

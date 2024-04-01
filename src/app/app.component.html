@@ -82,7 +82,7 @@
   >
     Profile
   </button>
-  <mat-menu #profileMenu="matMenu" xPosition="before" class="rounded-xl">
+  <mat-menu #profileMenu="matMenu" xPosition="before">
     <a mat-menu-item routerLink="/profile" (click)="sidenav.close()">Models</a>
     <button mat-menu-item (click)="sidenav.close(); logout()">Log out</button>
   </mat-menu>

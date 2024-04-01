@@ -10,14 +10,19 @@ import { MyInputComponent } from './my-input/my-input.component';
 import { FormsModule } from '@angular/forms';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 @NgModule({
-  declarations: [Viewer3dComponent, MyFileInputComponent, MyInputComponent, SnackBarComponent],
+  declarations: [
+    Viewer3dComponent,
+    MyFileInputComponent,
+    MyInputComponent,
+    SnackBarComponent,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
     AppDirectivesModule,
     FileInputComponent,
     SnackbarComponent,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     FileInputComponent,

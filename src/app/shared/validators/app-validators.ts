@@ -44,6 +44,14 @@ export class AppValidators {
     };
   }
 
+  static maxArrayLength(max: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const arr = control.value;
+
+      return arr.length > max ? { maxArrayLength: true } : null;
+    };
+  }
+
   static uniqueFilesExt(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       let extRecords: Record<string, any> = {};

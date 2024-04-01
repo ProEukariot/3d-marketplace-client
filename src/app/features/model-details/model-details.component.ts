@@ -41,6 +41,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.modelUrl = `${this.apiUrl}models/preview/${this.id}/file`;
+    this.modelUrl = 'XXX';
 
     this.authSubscription = this.authService.isLoggedIn$.subscribe(
       (value) => (this.isLoggedIn = value)

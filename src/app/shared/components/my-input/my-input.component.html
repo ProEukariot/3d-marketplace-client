@@ -8,7 +8,7 @@
     (focus)="labelFocused = true"
     [ngModel]="value"
     (ngModelChange)="setValue($event)"
-    (blur)="labelFocused = false"
+    (blur)="labelFocused = false; onTouched()"
     class="overflow-hidden outline-none transition-all"
     [class.flex-1]="labelFocused || value"
   />

@@ -1,9 +1,6 @@
 <div class="flex justify-between items-center ps-2">
   <span class="p-0 m-0 text-sm">{{ data.message }}</span>
-  <button
-    (click)="snackBarRef.dismiss()"
-    class="flex items-center justify-center"
-  >
+  <button mat-icon-button (click)="snackBarRef.dismiss()" class="icon-btn-sm">
     <mat-icon>close</mat-icon>
   </button>
 </div>

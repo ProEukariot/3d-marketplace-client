@@ -52,8 +52,6 @@ export class MyFileInputComponent implements ControlValueAccessor {
         break;
     }
 
-    console.log(this.onChange);
-
     this.onChange(this.value);
     this.onTouched();
   }

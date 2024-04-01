@@ -49,9 +49,25 @@ body {
     @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-black text-white text-center cursor-pointer select-none transition-all p-2 px-4;
   }
 
-  /* .btn:hover {
-    @apply shadow-lg;
-  } */
+  .btn-light {
+    @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-transparent text-black border border-zinc-400 text-center cursor-pointer select-none transition-all p-2 px-4;
+  }
+}
+
+.btn-light:hover {
+  @apply shadow-xl;
+}
+
+.drop-area {
+  @apply rounded-xl bg-white shadow-sm shadow-zinc-400 transition-all p-2;
+}
+
+.drop-area.file-over {
+  @apply shadow-lg;
+}
+
+[role="menu"].mat-mdc-menu-panel {
+  @apply rounded-xl;
 }
 
 mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__surface {
@@ -80,4 +96,46 @@ mat-card.mat-mdc-card:hover {
 
 mat-card-header.mat-mdc-card-header {
   @apply p-2 px-4 select-none;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-content {
+  @apply p-0 m-0;
+}
+
+button.icon-btn-sm.mdc-icon-button.mat-mdc-icon-button {
+  @apply h-6 w-6;
+}
+
+button.icon-btn-sm.mdc-icon-button.mat-mdc-icon-button
+  .mat-mdc-button-touch-target {
+  @apply h-6 w-6;
+}
+
+button.icon-btn-sm.mdc-icon-button.mat-mdc-icon-button .mat-icon {
+  @apply absolute top-0 left-0 text-base transition-all;
+}
+
+button.icon-btn-sm.mdc-icon-button.mat-mdc-icon-button:hover .mat-icon {
+  @apply text-red-500;
+}
+
+mat-dialog-container.mat-mdc-dialog-container.mdc-dialog
+  .mat-mdc-dialog-surface {
+  @apply rounded-3xl bg-zinc-100 p-4;
+}
+
+.mat-mdc-menu-panel.material-menu {
+  @apply max-w-none;
+}
+
+.material-menu .mat-mdc-menu-content {
+  @apply flex flex-col;
+}
+
+.material-menu .mat-mdc-menu-item {
+  @apply p-2 px-4;
+}
+
+.material-menu .mat-mdc-menu-item-text {
+  @apply flex flex-row items-center flex-1;
 }
