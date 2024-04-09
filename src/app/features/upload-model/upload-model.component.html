@@ -1,7 +1,7 @@
 <section class="mt-nav p-4">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col">
     <!-- title input -->
-    <div>
+    <div class="mb-4">
       <app-my-input formControlName="title" label="Title"></app-my-input>
 
       <div
@@ -25,12 +25,38 @@
       </div>
     </div>
 
+    <!-- Price input -->
+    <div class="mb-4">
+      <app-my-input
+        formControlName="price"
+        label="Price"
+        type="number"
+      ></app-my-input>
+
+      <div
+        *ngIf="hasError('price')"
+        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      >
+        <ul class="text-red-500 list-disc list-inside ps-2">
+          <li
+            *ngIf="form.controls['price'].hasError('required')"
+            class="text-sm"
+          >
+            Price is required
+          </li>
+          <li *ngIf="form.controls['price'].hasError('min')" class="text-sm">
+            Price must be greater that 0
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <!-- material files input -->
-    <div>
+    <div class="mb-4">
       <div
         dragAndDrop
         (fileDropped)="materialInp.setValue($event.files)"
-        class="flex flex-col items-center justify-center h-72 rounded-3xl mt-4 drop-area sm:flex-row"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
       >
         <span class="p-2">Drop materials or</span>
         <app-my-file-input
@@ -62,7 +88,7 @@
         </ul>
       </div>
 
-      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-4">
+      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2">
         <li
           *ngFor="let material of form.controls['materials'].value; index as i"
           class="p-2 px-4"
@@ -82,11 +108,11 @@
     </div>
 
     <!-- 3d models file input -->
-    <div>
+    <div class="mb-4">
       <div
         dragAndDrop
         (fileDropped)="modelsInp.setValue($event.files)"
-        class="flex flex-col items-center justify-center h-72 rounded-3xl mt-4 drop-area sm:flex-row"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
       >
         <span class="p-2">Drop models or</span>
         <app-my-file-input
@@ -130,7 +156,7 @@
         </ul>
       </div>
 
-      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-4">
+      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2">
         <li
           *ngFor="let model of form.controls['models'].value; index as i"
           class="p-2 px-4"

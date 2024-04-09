@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
 import { Model3d } from '../models/model3d';
 import { FileMetaDto } from '../dto/file-meta.dto';
+import { Router, UrlSerializer } from '@angular/router';
+import { ParseUrlService } from './parse-api-url.service';
 
 export type CreateModel3dDto = {
   name: string;
@@ -15,7 +17,26 @@ export type CreateModel3dDto = {
 export class Model3dService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly urlService: ParseUrlService
+  ) {}
+
+  upload3dModel(formData: FormData) {
+    return this.http.post(this.urlService.url(['models', 'add']), formData);
+  }
+
+  get3dModels(cursor?: string) {
+    const limit = 4;
+
+    return this.http.get<Model3d[]>(
+      this.urlService.url(['models'], {
+        queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
+      })
+    );
+  }
+
+  //////////
 
   createModel3d(model3dDto: CreateModel3dDto) {
     return this.http.post<{ insertedId: string }>(
@@ -29,10 +50,6 @@ export class Model3dService {
       `${this.apiUrl}models/upload/files`,
       formData
     );
-  }
-
-  loadModels3d(page: number) {
-    return this.http.get<Model3d[]>(`${this.apiUrl}models/${page}`);
   }
 
   loadUsersModels3d(page: number) {

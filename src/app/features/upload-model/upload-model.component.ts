@@ -12,12 +12,14 @@ import {
 } from 'rxjs';
 import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop.directive';
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/app/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
 import { Model3dService } from 'src/app/shared/services/model3d.service';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-model',
@@ -29,14 +31,43 @@ export class UploadModelComponent implements OnInit {
   formSubmitted = false;
   @ViewChild('materialInp') materialFileInp!: FileInputComponent;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    private readonly model3dService: Model3dService,
+    private readonly notificationService: NotificationService,
+    private readonly router: Router
+  ) {}
 
   onSubmit() {
     this.formSubmitted = true;
     console.log(this.form.valid);
     console.log(this.form.value);
 
-    // const baseUrl = environment.apiUrl;
+    if (this.form.invalid) return;
+
+    const baseUrl = environment.apiUrl;
+
+    const materialFiles = this.form.controls['materials'].value as File[];
+    const modelFiles = this.form.controls['models'].value as File[];
+
+    const formData = new FormData();
+
+    formData.append('title', this.form.controls['title'].value);
+    formData.append('price', this.form.controls['price'].value);
+
+    materialFiles.forEach((file) =>
+      formData.append('materials', file, file.name)
+    );
+    modelFiles.forEach((file) => formData.append('models', file, file.name));
+
+    this.model3dService.upload3dModel(formData).subscribe(
+      (insertedResult) => {
+        this.router.navigate(['explore']);
+      },
+      (error: HttpErrorResponse) => {
+        console.error(error);
+        this.notificationService.showNotification('An error occured.', 'error');
+      }
+    );
 
     //   if (this.uploadModelForm.valid) {
     //     const body = {
@@ -98,6 +129,7 @@ export class UploadModelComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[A-Za-z0-9-_]*$'),
       ]),
+      price: new FormControl(0, [Validators.min(0), Validators.required]),
       materials: new FormControl<File[]>(
         [],
         [

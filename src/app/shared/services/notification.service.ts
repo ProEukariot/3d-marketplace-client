@@ -11,10 +11,10 @@ import {
 export class NotificationService {
   constructor(private readonly snackBar: MatSnackBar) {}
 
-  showNotification(message: string, type: NotificationType) {
+  showNotification(message: string, type?: NotificationType) {
     this.snackBar.openFromComponent(SnackBarComponent, {
       duration: 8000,
-      panelClass: [type],
+      panelClass: type ? [type] : undefined,
       data: {
         message,
         type,

@@ -35,14 +35,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   onScroll() {
-    this.isFetching = true;
-    this.models3dService.loadModels3d(++this.page).subscribe((items) => {
-      this.uploadedModels.push(...items);
-      this.isFetching = false;
+    // this.isFetching = true;
+    // this.models3dService.get3dModels(++this.page).subscribe((items) => {
+    //   this.uploadedModels.push(...items);
+    //   this.isFetching = false;
 
-      if (items.length < 1) {
-        this.intercextionListenerDirective.unsubscribe();
-      }
-    });
+    //   if (items.length < 1) {
+    //     this.intercextionListenerDirective.unsubscribe();
+    //   }
+    // });
   }
 }

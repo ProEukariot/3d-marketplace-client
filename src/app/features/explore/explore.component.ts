@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { IntercextionListenerDirective } from 'src/app/shared/directives/intercextion-listener.directive';
 import { Model3d } from 'src/app/shared/models/model3d';
 import { Model3dService } from 'src/app/shared/services/model3d.service';
@@ -9,9 +10,12 @@ import { Model3dService } from 'src/app/shared/services/model3d.service';
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.css'],
 })
-export class ExploreComponent implements OnInit {
-  page = 1;
-  models: Model3d[] = [];
+export class ExploreComponent implements OnInit, OnDestroy {
+  cursor?: string;
+  cursorSub!: Subscription;
+
+  modelsSubject = new BehaviorSubject<Model3d[]>([]);
+  models$ = this.modelsSubject.asObservable();
 
   isFetching: boolean = false;
 
@@ -25,9 +29,13 @@ export class ExploreComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.models3dService.loadModels3d(this.page).subscribe((items) => {
-      this.models = items;
+    this.cursorSub = this.models$.subscribe((items) => {
+      this.cursor = items[items.length - 1]?.id;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.cursorSub.unsubscribe();
   }
 
   onCardClick(id: string) {
@@ -36,10 +44,12 @@ export class ExploreComponent implements OnInit {
 
   onScroll() {
     this.isFetching = true;
-    this.models3dService.loadModels3d(++this.page).subscribe((items) => {
-      this.models.push(...items);
-      this.isFetching = false;
+    this.models3dService.get3dModels(this.cursor).subscribe((items) => {
+      const currentItems = this.modelsSubject.getValue();
 
+      this.modelsSubject.next([...currentItems, ...items]);
+
+      this.isFetching = false;
       if (items.length < 1) {
         this.intercextionListenerDirective.unsubscribe();
       }
