@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -43,6 +45,7 @@ export class Viewer3dComponent implements AfterViewInit {
   @ViewChild('canvas')
   private canvasRef!: ElementRef<HTMLCanvasElement>;
   @Input() dataSource!: string;
+  @Output() error = new EventEmitter<unknown>();
 
   private scene!: Scene;
   private camera!: PerspectiveCamera;
@@ -51,19 +54,21 @@ export class Viewer3dComponent implements AfterViewInit {
   private loadingManager = new LoadingManager();
 
   constructor() {
-    this.loadingManager.onStart = (_, loaded, total) => {
-      this.loadedProgress = loaded / total;
-    };
-
-    this.loadingManager.onProgress = (_, loaded, total) => {
-      this.loadedProgress = loaded / total;
-      console.log(loaded, total, this.loadedProgress);
-    };
-
-    this.loadingManager.onLoad = () => {
-      this.loadedProgress = 1;
-      this.loaded = true;
-    };
+    // this.loadingManager.onStart = (_, loaded, total) => {
+    //   // this.loadedProgress = loaded / total;
+    //   this.loadedProgress = 0;
+    // };
+    // this.loadingManager.onProgress = (_, loaded, total) => {
+    //   this.loadedProgress = loaded / total;
+    //   console.log(loaded, total, this.loadedProgress);
+    // };
+    // this.loadingManager.onLoad = () => {
+    //   this.loadedProgress = 1;
+    //   this.loaded = true;
+    // };
+    // this.loadingManager.onError = (a) => {
+    //   console.log('ERROOOOR', a);
+    // };
   }
 
   private getBox(object: Object3D<Object3DEventMap>) {
@@ -94,18 +99,33 @@ export class Viewer3dComponent implements AfterViewInit {
   }
 
   private loadMesh() {
-    const gltfLoader = new GLTFLoader(this.loadingManager);
-    gltfLoader.load(this.dataSource, (gltfScene) => {
-      const mesh = gltfScene.scene;
+    // const gltfLoader = new GLTFLoader(this.loadingManager);
+    const gltfLoader = new GLTFLoader();
 
-      this.centerObject(mesh);
-      this.fitCamera(mesh);
+    gltfLoader.load(
+      this.dataSource,
+      (gltfScene) => {
+        const mesh = gltfScene.scene;
 
-      this.scene.add(mesh);
+        this.centerObject(mesh);
+        this.fitCamera(mesh);
 
-      // const boxHelper = new BoxHelper(mesh, 0xffff00);
-      // this.scene.add(boxHelper);
-    });
+        this.scene.add(mesh);
+
+        this.loaded = true;
+
+        // const boxHelper = new BoxHelper(mesh, 0xffff00);
+        // this.scene.add(boxHelper);
+      },
+      (e) => {
+        // console.log('PROGRESS__', e);
+        this.loadedProgress = (e.loaded / e.total);
+      },
+      (err) => {
+        this.error.emit(err);
+        console.error(err);
+      }
+    );
   }
 
   private configureCamera() {

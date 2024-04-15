@@ -1,18 +1,37 @@
-<section>
-  <app-viewer3d [dataSource]="modelUrl"></app-viewer3d>
+<section class="mt-nav mb-4">
+  <app-viewer3d
+    [dataSource]="modelUrl"
+    (error)="onLoadError($event)"
+  ></app-viewer3d>
 </section>
 
-<section>
-  <div>
-    <ng-container *ngFor="let file of availableFiles">
-      <!-- [disabled]="!isLoggedIn" -->
-      <button
-        mat-raised-button
-        (click)="onFileDownload(file.ext)"
-        class="my-2 mx-4"
+<section class="px-4">
+  <div *ngIf="model3d$ | async as model3d" class="mb-4">
+    <div class="flex flex-row items-center justify-between mb-4">
+      <h2 class="m-0">
+        {{ model3d.name }}
+        <span *ngIf="model3d.user as user">By {{ user.username }}</span>
+      </h2>
+      <span>{{ model3d.price | currency }}</span>
+    </div>
+
+    <div class="flex flex-row">
+      <ng-container
+        *ngIf="model3d.files && model3d.files.length; else elseTemplate"
       >
-        Download .{{ file.ext }}
-      </button>
-    </ng-container>
+        <button
+          *ngFor="let file of model3d.files"
+          [disabled]="!(isLoggedIn$ | async)"
+          (click)="onFileDownload(file.id)"
+          class="btn flex-initial me-2"
+        >
+          Download .{{ file.name.split(".").pop() }}
+        </button>
+      </ng-container>
+
+      <ng-template #elseTemplate>
+        <span>No available files for that model.</span>
+      </ng-template>
+    </div>
   </div>
 </section>

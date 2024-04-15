@@ -6,18 +6,18 @@ import { environment } from 'src/app/environments/environment';
   providedIn: 'root',
 })
 export class ParseUrlService {
-  private apiUrl = environment.apiUrl;
+  private _apiUrl = environment.apiUrl;
 
   constructor(
     private readonly router: Router,
     private readonly serializer: UrlSerializer
   ) {}
 
-  url(commands: any[], navigationExtras?: UrlCreationOptions | undefined) {
+  apiUrl(commands: any[], navigationExtras?: UrlCreationOptions | undefined) {
     const tree = this.router.createUrlTree(commands, navigationExtras);
 
     const serializedTree = this.serializer.serialize(tree);
 
-    return `${this.apiUrl}${serializedTree}`;
+    return `${this._apiUrl}${serializedTree}`;
   }
 }

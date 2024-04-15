@@ -4,6 +4,7 @@ import { environment } from 'src/app/environments/environment';
 import { Token } from '../types/token';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
+import { ParseUrlService } from './parse-api-url.service';
 
 export const ACCESS_TOKEN = 'ACCESS_TOKEN';
 
@@ -23,7 +24,6 @@ export type LoginDto = {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
   private isLoggedInSubject = new BehaviorSubject(
     !!this.localService.get(ACCESS_TOKEN)
   );
@@ -32,7 +32,8 @@ export class AuthService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly localService: LocalStorageService
+    private readonly localService: LocalStorageService,
+    private readonly urlService: ParseUrlService
   ) {}
 
   getToken() {
@@ -40,11 +41,17 @@ export class AuthService {
   }
 
   signUp(userDto: RegisterDto) {
-    return this.http.post<Token>(`${this.apiUrl}auth/signup`, userDto);
+    return this.http.post<Token>(
+      this.urlService.apiUrl(['auth', 'signup']),
+      userDto
+    );
   }
 
   signIn(userDto: LoginDto) {
-    return this.http.post<Token>(`${this.apiUrl}auth/signin`, userDto);
+    return this.http.post<Token>(
+      this.urlService.apiUrl(['auth', 'signin']),
+      userDto
+    );
   }
 
   saveToken(token: Token) {

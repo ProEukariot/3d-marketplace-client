@@ -1,0 +1,7 @@
+<mat-card (click)="click.emit($event)" class="cursor-pointer">
+  <img mat-card-image src="https://placehold.co/400" />
+  <mat-card-header>
+    <mat-card-title>{{ model.name }}</mat-card-title>
+    <mat-card-subtitle>{{ model.price | currency }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

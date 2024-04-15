@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
+import { LoaderService } from './shared/services/loader.service';
 
 type NavLink = { text: string; path: string };
 
@@ -9,28 +10,25 @@ type NavLink = { text: string; path: string };
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  public isLoggedIn = false;
-  private authSubscription!: Subscription;
+export class AppComponent implements OnInit {
+  public isLoggedIn$ = of(false);
+  
 
   navLinks: Array<NavLink> = [
     { text: 'Explore', path: '/explore' },
     { text: 'Home', path: '/home' },
   ];
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    public readonly loaderService: LoaderService
+  ) {}
+
+  ngOnInit(): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
 
   logout() {
     this.authService.clearToken();
-  }
-
-  ngOnInit(): void {
-    this.authSubscription = this.authService.isLoggedIn$.subscribe(
-      (value) => (this.isLoggedIn = value)
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
   }
 }

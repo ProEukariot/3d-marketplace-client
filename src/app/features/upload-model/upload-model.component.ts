@@ -9,6 +9,7 @@ import {
   catchError,
   throwError,
   EMPTY,
+  finalize,
 } from 'rxjs';
 import { FileDroppedEvent } from 'src/app/shared/directives/drag-and-drop.directive';
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component';
@@ -20,6 +21,7 @@ import { Model3dService } from 'src/app/shared/services/model3d.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Router } from '@angular/router';
+import { LoaderService } from 'src/app/shared/services/loader.service';
 
 @Component({
   selector: 'app-upload-model',
@@ -34,17 +36,14 @@ export class UploadModelComponent implements OnInit {
   constructor(
     private readonly model3dService: Model3dService,
     private readonly notificationService: NotificationService,
-    private readonly router: Router
+    private readonly router: Router,
+    public readonly loaderService: LoaderService
   ) {}
 
   onSubmit() {
     this.formSubmitted = true;
-    console.log(this.form.valid);
-    console.log(this.form.value);
 
     if (this.form.invalid) return;
-
-    const baseUrl = environment.apiUrl;
 
     const materialFiles = this.form.controls['materials'].value as File[];
     const modelFiles = this.form.controls['models'].value as File[];
@@ -59,59 +58,27 @@ export class UploadModelComponent implements OnInit {
     );
     modelFiles.forEach((file) => formData.append('models', file, file.name));
 
-    this.model3dService.upload3dModel(formData).subscribe(
-      (insertedResult) => {
-        this.router.navigate(['explore']);
-      },
-      (error: HttpErrorResponse) => {
-        console.error(error);
-        this.notificationService.showNotification('An error occured.', 'error');
-      }
-    );
+    this.loaderService.show();
 
-    //   if (this.uploadModelForm.valid) {
-    //     const body = {
-    //       name: this.uploadModelForm.controls['name'].value,
-    //       amount: this.uploadModelForm.controls['amount'].value,
-    //     };
-
-    //     const files = this.uploadModelForm.controls['files'].value as File[];
-
-    //     const formData = new FormData();
-    //     files.forEach((file) => formData.append('files', file, file.name));
-
-    //     this.model3dService.createModel3d(body);
-
-    //     this.model3dService
-    //       .createModel3d(body)
-    //       .pipe(
-    //         catchError((error) => {
-    //           const mes = '3D model is not created';
-    //           this.openSnackBar(mes);
-
-    //           console.error(error);
-    //           return EMPTY;
-    //         }),
-    //         switchMap((res: { insertedId: string }) => {
-    //           formData.append('model3dId', res.insertedId);
-
-    //           return this.model3dService.createFiles(formData);
-    //         })
-    //       )
-    //       .subscribe(
-    //         (res: { insertedIds: string[] }) => {
-    //           this.openSnackBar(
-    //             `Files added sucsessfully: ${res.insertedIds.length}`
-    //           );
-    //         },
-    //         (error) => {
-    //           const mes = 'Files are not uploaded';
-    //           this.openSnackBar(mes);
-
-    //           console.error(error);
-    //           return EMPTY;
-    //         }
-    //       );
+    this.model3dService
+      .upload3dModel(formData)
+      .pipe(
+        finalize(() => {
+          this.loaderService.hide();
+        })
+      )
+      .subscribe(
+        (insertedResult) => {
+          this.router.navigate(['explore']);
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error);
+          this.notificationService.showNotification(
+            'An error occured.',
+            'error'
+          );
+        }
+      );
   }
 
   hasError(controlName: string) {

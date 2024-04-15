@@ -1,6 +1,17 @@
-<div class="container">
+<div class="wrapper">
   <canvas #canvas class="viewer"></canvas>
-  <span class="absolute-center" [class.hide]="loaded">{{
-    loadedProgress | percent
-  }}</span>
+  <mat-spinner
+    *ngIf="!loaded"
+    mode="determinate"
+    [value]="loadedProgress * 100"
+    class="absolute absolute-center"
+    [diameter]="50"
+    [strokeWidth]="4"
+  ></mat-spinner>
+
+  <!-- <span
+    class="absolute-center text-8xl select-none cursor-default"
+    [class.hide]="loaded"
+    >{{ loadedProgress | percent }}</span
+  > -->
 </div>

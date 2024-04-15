@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { IntercextionListenerDirective } from 'src/app/shared/directives/intercextion-listener.directive';
 import { Model3d } from 'src/app/shared/models/model3d';
+import { LoaderService } from 'src/app/shared/services/loader.service';
 import { Model3dService } from 'src/app/shared/services/model3d.service';
 
 @Component({
@@ -23,9 +24,10 @@ export class ExploreComponent implements OnInit, OnDestroy {
   intercextionListenerDirective!: IntercextionListenerDirective;
 
   constructor(
+    private readonly models3dService: Model3dService,
+    public readonly loaderService: LoaderService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
-    private readonly models3dService: Model3dService
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -44,12 +46,16 @@ export class ExploreComponent implements OnInit, OnDestroy {
 
   onScroll() {
     this.isFetching = true;
+    this.loaderService.show();
+
     this.models3dService.get3dModels(this.cursor).subscribe((items) => {
       const currentItems = this.modelsSubject.getValue();
 
       this.modelsSubject.next([...currentItems, ...items]);
 
       this.isFetching = false;
+      this.loaderService.hide();
+
       if (items.length < 1) {
         this.intercextionListenerDirective.unsubscribe();
       }

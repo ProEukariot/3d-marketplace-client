@@ -13,21 +13,33 @@ import { AppDirectivesModule } from '../shared/directives/app-directives.module'
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
+import { authGuard } from '../shared/guards/auth.guard';
+import { modelDetailsResolver } from './model-details/model-details.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'profile', component: UserProfileComponent },
-  // { path: 'explore', component: ExploreComponent },
-  // { path: 'explore/:id', component: ModelDetailsComponent },
+  {
+    path: 'profile',
+    component: UserProfileComponent,
+    canActivate: [authGuard],
+  },
   {
     path: 'explore',
     children: [
       { path: '', component: ExploreComponent },
-      { path: ':id', component: ModelDetailsComponent },
+      {
+        path: ':id',
+        component: ModelDetailsComponent,
+        resolve: { model: modelDetailsResolver },
+      },
     ],
   },
-  { path: 'upload-model', component: UploadModelComponent },
+  {
+    path: 'upload-model',
+    component: UploadModelComponent,
+    canActivate: [authGuard],
+  },
   {
     path: 'auth',
     children: [

@@ -1,25 +1,25 @@
-<section class="p-4">
-  <h2>Owned models</h2>
+<section class="mt-nav p-4">
   <div class="grid-template">
-    <mat-card *ngFor="let model of uploadedModels" (click)="onCardClick(model.id)">
-      <img mat-card-image src="https://placehold.co/400" />
-      <mat-card-header class="p-2">
-        <mat-card-title>{{ model.name }}</mat-card-title>
-        <mat-card-subtitle>{{ model.price | currency }}</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+    <ng-container *ngFor="let model of models$ | async">
+      <app-card [model]="model" (click)="onCardClick(model.id)" />
+    </ng-container>
   </div>
 
   <div
     appIntercextionListener
     rootMargin="0px"
     (onScroll)="onScroll()"
-    class="text-xl text-center mt-2"
+    class="flex flex-col justify-center items-center h-12 mt-2"
   >
-    {{ isFetching ? "Loading..." : "" }}
+    <span *ngIf="isFetching" class="text-xl text-center my-2">
+      Loading...
+    </span>
+    <button *ngIf="!isFetching" (click)="onScroll()" class="btn mt-2">
+      Upload more
+    </button>
   </div>
 
-  <a routerLink="/upload-model" mat-fab class="fixed right-8 bottom-8">
+  <a routerLink="/upload-model" mat-fab class="fixed right-8 bottom-8 bg-black">
     <mat-icon>add</mat-icon>
   </a>
 </section>

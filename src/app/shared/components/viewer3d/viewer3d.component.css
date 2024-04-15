@@ -2,7 +2,7 @@
   @apply touch-none flex-1;
 }
 
-.container {
+.wrapper {
   @apply w-full h-auto flex relative;
 }
 

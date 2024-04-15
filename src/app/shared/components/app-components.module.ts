@@ -9,12 +9,15 @@ import { MyFileInputComponent } from './my-file-input/my-file-input.component';
 import { MyInputComponent } from './my-input/my-input.component';
 import { FormsModule } from '@angular/forms';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
+import { CardComponent } from './card/card.component';
+
 @NgModule({
   declarations: [
     Viewer3dComponent,
     MyFileInputComponent,
     MyInputComponent,
     SnackBarComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +32,7 @@ import { SnackBarComponent } from './snack-bar/snack-bar.component';
     Viewer3dComponent,
     MyFileInputComponent,
     MyInputComponent,
+    CardComponent,
   ],
 })
 export class AppComponentsModule {}

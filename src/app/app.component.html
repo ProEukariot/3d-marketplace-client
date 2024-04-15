@@ -42,6 +42,10 @@
           </div>
         </div>
       </mat-toolbar>
+      <mat-progress-bar
+        *ngIf="loaderService.isLoading$ | async"
+        mode="indeterminate"
+      ></mat-progress-bar>
     </header>
     <main>
       <router-outlet></router-outlet>
@@ -67,7 +71,7 @@
 
 <ng-template #profileTemplate>
   <a
-    *ngIf="!isLoggedIn"
+    *ngIf="!(isLoggedIn$ | async)"
     routerLink="/auth/signin"
     (click)="sidenav.close()"
     class="btn m-2"
@@ -75,7 +79,7 @@
   >
 
   <button
-    *ngIf="isLoggedIn"
+    *ngIf="isLoggedIn$ | async"
     mat-ripple
     [matMenuTriggerFor]="profileMenu"
     class="px-4 text-start h-12 w-full sm:h-full sm:w-auto sm:text-center hover:bg-zinc-100"

@@ -70,6 +70,10 @@ body {
   @apply rounded-xl;
 }
 
+[disabled].btn {
+  @apply bg-zinc-400;
+}
+
 mat-snack-bar-container.mdc-snackbar.error .mdc-snackbar__surface {
   @apply rounded-xl bg-red-50/50 border border-solid border-red-500 text-red-500;
 }
@@ -138,4 +142,22 @@ mat-dialog-container.mat-mdc-dialog-container.mdc-dialog
 
 .material-menu .mat-mdc-menu-item-text {
   @apply flex flex-row items-center flex-1;
+}
+
+mat-progress-bar.mat-mdc-progress-bar .mdc-linear-progress__bar-inner {
+  @apply border-zinc-400;
+}
+
+mat-progress-bar.mat-mdc-progress-bar .mdc-linear-progress__buffer-bar {
+  @apply bg-transparent;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: rgb(161 161 170);
+}
+
+.grid-template {
+  @apply grid gap-4;
+
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }

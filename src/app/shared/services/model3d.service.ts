@@ -23,17 +23,35 @@ export class Model3dService {
   ) {}
 
   upload3dModel(formData: FormData) {
-    return this.http.post(this.urlService.url(['models', 'add']), formData);
+    return this.http.post(this.urlService.apiUrl(['models', 'add']), formData);
+  }
+
+  get3dModel(id: string) {
+    return this.http.get<Model3d>(this.urlService.apiUrl(['models', id]));
   }
 
   get3dModels(cursor?: string) {
     const limit = 4;
 
     return this.http.get<Model3d[]>(
-      this.urlService.url(['models'], {
+      this.urlService.apiUrl(['models'], {
         queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
       })
     );
+  }
+
+  getSubscribed3dModels(cursor?: string) {
+    const limit = 4;
+
+    return this.http.get<Model3d[]>(
+      this.urlService.apiUrl(['models', 'subscribed-models'], {
+        queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
+      })
+    );
+  }
+
+  getFileUrl(id: string) {
+    
   }
 
   //////////
@@ -68,10 +86,6 @@ export class Model3dService {
     );
 
     return file;
-  }
-
-  getModel3d(id: string) {
-    return this.http.get<Model3d>(`${this.apiUrl}models/${id}/details`);
   }
 
   downloadFile(model3dId: string, fileExt: string) {
