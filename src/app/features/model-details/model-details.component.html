@@ -1,6 +1,7 @@
 <section class="mt-nav mb-4">
   <app-viewer3d
     [dataSource]="modelUrl"
+    [dimensions]="dimensions"
     (error)="onLoadError($event)"
   ></app-viewer3d>
 </section>

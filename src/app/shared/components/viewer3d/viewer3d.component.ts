@@ -4,8 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -41,10 +43,12 @@ import Color4 from 'three/examples/jsm/renderers/common/Color4';
 export class Viewer3dComponent implements AfterViewInit {
   public loadedProgress = 0;
   public loaded = false;
+  public disabled = true;
 
-  @ViewChild('canvas')
+  @ViewChild('canvas', { static: true })
   private canvasRef!: ElementRef<HTMLCanvasElement>;
   @Input() dataSource!: string;
+  @Input({ required: true }) dimensions!: { x: number; y: number };
   @Output() error = new EventEmitter<unknown>();
 
   private scene!: Scene;
@@ -119,7 +123,7 @@ export class Viewer3dComponent implements AfterViewInit {
       },
       (e) => {
         // console.log('PROGRESS__', e);
-        this.loadedProgress = (e.loaded / e.total);
+        this.loadedProgress = e.loaded / e.total;
       },
       (err) => {
         this.error.emit(err);
@@ -129,7 +133,10 @@ export class Viewer3dComponent implements AfterViewInit {
   }
 
   private configureCamera() {
-    this.camera = new PerspectiveCamera(45, 800 / 600);
+    this.camera = new PerspectiveCamera(
+      45,
+      this.dimensions.x / this.dimensions.y
+    );
     this.camera.position.z = 20;
     this.scene.add(this.camera);
   }
@@ -159,7 +166,7 @@ export class Viewer3dComponent implements AfterViewInit {
       canvas: this.canvasRef.nativeElement,
       alpha: true,
     });
-    this.renderer.setSize(800, 600);
+    this.renderer.setSize(this.dimensions.x, this.dimensions.y);
     this.renderer.render(this.scene, this.camera);
   }
 

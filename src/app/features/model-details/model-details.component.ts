@@ -1,12 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   Observable,
   Subscription,
   catchError,
   flatMap,
+  fromEvent,
   map,
   mergeMap,
+  of,
   switchMap,
   tap,
 } from 'rxjs';
@@ -18,6 +26,7 @@ import { Model3dService } from 'src/app/shared/services/model3d.service';
 import { saveAs } from 'file-saver';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Model3d } from 'src/app/shared/models/model3d';
+import { Viewer3dComponent } from 'src/app/shared/components/viewer3d/viewer3d.component';
 
 @Component({
   selector: 'app-model-details',
@@ -25,8 +34,9 @@ import { Model3d } from 'src/app/shared/models/model3d';
   styleUrls: ['./model-details.component.css'],
 })
 export class ModelDetailsComponent implements OnInit {
-  public modelId!: string;
+  // public modelId!: string;
   public modelUrl!: string;
+  public dimensions!: { x: number; y: number };
   public model3d$!: Observable<Model3d>;
 
   // public availableFiles: Array<FileMetaDto> = [];
@@ -51,6 +61,8 @@ export class ModelDetailsComponent implements OnInit {
 
     this.model3d$ = this.route.data.pipe(map(({ model }) => model));
 
+    this.dimensions = { x: window.innerWidth, y: window.innerHeight };
+
     // this.model3d$ = this.model3dService
     //   .get3dModel(this.modelId)
     //   .pipe(tap((o) => console.log(o)));
@@ -72,7 +84,16 @@ export class ModelDetailsComponent implements OnInit {
 
     // if url is null
 
-    
+    this.model3d$
+      .pipe(
+        switchMap((mode3d) =>
+          this.checkoutService.createCheckoutSession(mode3d.id)
+        )
+      )
+      .subscribe(({ url }) => {
+        location.href = url;
+        // console.log(url);
+      });
   }
 
   // onFileDownload(fileExt: string) {

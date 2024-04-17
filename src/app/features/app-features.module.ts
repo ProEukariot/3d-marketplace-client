@@ -15,6 +15,8 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from '../shared/guards/auth.guard';
 import { modelDetailsResolver } from './model-details/model-details.resolver';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,6 +49,13 @@ const routes: Routes = [
       { path: 'signup', component: SignupComponent },
     ],
   },
+  {
+    path: 'payment',
+    children: [
+      { path: 'success', component: PaymentSuccessComponent },
+      { path: 'failure', component: PaymentFailureComponent },
+    ],
+  },
 ];
 
 @NgModule({
@@ -58,6 +67,8 @@ const routes: Routes = [
     HomeComponent,
     SigninComponent,
     SignupComponent,
+    PaymentSuccessComponent,
+    PaymentFailureComponent,
   ],
   imports: [
     CommonModule,

@@ -1,17 +1,35 @@
-<div class="wrapper">
-  <canvas #canvas class="viewer"></canvas>
+<div class="relative overflow-x-hidden">
+  <canvas
+    #canvas
+    [width]="dimensions.x"
+    [height]="dimensions.y"
+    class="touch-none"
+  ></canvas>
+
   <mat-spinner
     *ngIf="!loaded"
     mode="determinate"
     [value]="loadedProgress * 100"
-    class="absolute absolute-center"
-    [diameter]="50"
-    [strokeWidth]="4"
+    class="absolute absolute-center pointer-events-none"
+    [diameter]="100"
+    [strokeWidth]="8"
   ></mat-spinner>
 
-  <!-- <span
-    class="absolute-center text-8xl select-none cursor-default"
-    [class.hide]="loaded"
-    >{{ loadedProgress | percent }}</span
-  > -->
+  <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+    <div
+      *ngIf="disabled; else elseTemplate"
+      (click)="disabled = false"
+      class="flex items-center justify-center w-full h-full bg-zinc-200/80 pointer-events-auto"
+    >
+      <span class="text-2xl select-none">Click to observe the model</span>
+    </div>
+
+    <ng-template #elseTemplate>
+      <div class="pointer-events-auto p-4">
+        <button mat-icon-button (click)="disabled = true" type="button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </div>
 </div>
