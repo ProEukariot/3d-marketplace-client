@@ -26,6 +26,25 @@ export class Model3dService {
     return this.http.post(this.urlService.apiUrl(['models', 'add']), formData);
   }
 
+  getModelPublicBlobUrl(id: string) {
+    return this.http.get(this.urlService.apiUrl(['models', 'preview', id]), {
+      responseType: 'text',
+    });
+  }
+
+  getModelPrivateBlobUrl(id: string, blobId: string) {
+    return this.http.get(
+      this.urlService.apiUrl(['models', id, 'blob', blobId]),
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  getBlobFromUrl(url: string) {
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
   get3dModel(id: string) {
     return this.http.get<Model3d>(this.urlService.apiUrl(['models', id]));
   }
@@ -50,9 +69,7 @@ export class Model3dService {
     );
   }
 
-  getFileUrl(id: string) {
-    
-  }
+  getFileUrl(id: string) {}
 
   //////////
 

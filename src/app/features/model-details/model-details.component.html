@@ -1,7 +1,7 @@
 <section class="mt-nav mb-4">
   <app-viewer3d
-    [dataSource]="modelUrl"
-    [dimensions]="dimensions"
+    [dataSource]="blobUrl$ | async"
+    [dimensions]="canvasDimensions"
     (error)="onLoadError($event)"
   ></app-viewer3d>
 </section>
@@ -23,7 +23,7 @@
         <button
           *ngFor="let file of model3d.files"
           [disabled]="!(isLoggedIn$ | async)"
-          (click)="onFileDownload(file.id)"
+          (click)="onFileDownload(file)"
           class="btn flex-initial me-2"
         >
           Download .{{ file.name.split(".").pop() }}

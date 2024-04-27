@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -40,14 +41,14 @@ import Color4 from 'three/examples/jsm/renderers/common/Color4';
   styleUrls: ['./viewer3d.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class Viewer3dComponent implements AfterViewInit {
+export class Viewer3dComponent implements AfterViewInit, OnChanges, OnDestroy {
   public loadedProgress = 0;
   public loaded = false;
   public disabled = true;
 
   @ViewChild('canvas', { static: true })
   private canvasRef!: ElementRef<HTMLCanvasElement>;
-  @Input() dataSource!: string;
+  @Input() dataSource!: string | null;
   @Input({ required: true }) dimensions!: { x: number; y: number };
   @Output() error = new EventEmitter<unknown>();
 
@@ -105,6 +106,9 @@ export class Viewer3dComponent implements AfterViewInit {
   private loadMesh() {
     // const gltfLoader = new GLTFLoader(this.loadingManager);
     const gltfLoader = new GLTFLoader();
+
+    // !!!!!
+    if (!this.dataSource) return;
 
     gltfLoader.load(
       this.dataSource,
@@ -200,5 +204,26 @@ export class Viewer3dComponent implements AfterViewInit {
       window.requestAnimationFrame(loop);
     };
     loop();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['dataSource'].firstChange) return;
+
+    this.loadMesh();
+  }
+
+  ngOnDestroy(): void {
+    if (!this.scene) return;
+
+    this.scene.traverse((obj) => {
+      if (!obj) return;
+
+      if (obj instanceof Mesh) {
+        obj.geometry.dispose();
+        obj.material.dispose();
+      }
+    });
+
+    this.scene.clear();
   }
 }

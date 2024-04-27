@@ -7,17 +7,23 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  EMPTY,
   Observable,
   Subscription,
   catchError,
+  filter,
+  finalize,
   flatMap,
   fromEvent,
   map,
   mergeMap,
   of,
   switchMap,
+  take,
+  takeWhile,
   tap,
 } from 'rxjs';
+import { File } from 'src/app/shared/models/file';
 import { environment } from 'src/app/environments/environment';
 import { FileMetaDto } from 'src/app/shared/dto/file-meta.dto';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -27,6 +33,7 @@ import { saveAs } from 'file-saver';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { Model3d } from 'src/app/shared/models/model3d';
 import { Viewer3dComponent } from 'src/app/shared/components/viewer3d/viewer3d.component';
+import { LoaderService } from 'src/app/shared/services/loader.service';
 
 @Component({
   selector: 'app-model-details',
@@ -35,8 +42,8 @@ import { Viewer3dComponent } from 'src/app/shared/components/viewer3d/viewer3d.c
 })
 export class ModelDetailsComponent implements OnInit {
   // public modelId!: string;
-  public modelUrl!: string;
-  public dimensions!: { x: number; y: number };
+  public blobUrl$!: Observable<string>;
+  public canvasDimensions!: { x: number; y: number };
   public model3d$!: Observable<Model3d>;
 
   // public availableFiles: Array<FileMetaDto> = [];
@@ -49,19 +56,20 @@ export class ModelDetailsComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
     private readonly model3dService: Model3dService,
-    private readonly checkoutService: CheckoutService
+    private readonly checkoutService: CheckoutService,
+    private readonly loader: LoaderService
   ) {}
 
   ngOnInit(): void {
-    // this.modelId = this.route.snapshot.params['id'];
-    this.modelUrl = 'assets/NeilArmstrong.glb';
+    const modelId = this.route.snapshot.params['id'];
+    this.blobUrl$ = this.model3dService.getModelPublicBlobUrl(modelId);
     // this.modelUrl = 'XXX';
 
     this.isLoggedIn$ = this.authService.isLoggedIn$;
 
     this.model3d$ = this.route.data.pipe(map(({ model }) => model));
 
-    this.dimensions = { x: window.innerWidth, y: window.innerHeight };
+    this.canvasDimensions = { x: window.innerWidth, y: window.innerHeight };
 
     // this.model3d$ = this.model3dService
     //   .get3dModel(this.modelId)
@@ -76,24 +84,79 @@ export class ModelDetailsComponent implements OnInit {
     this.notificationService.showNotification('Cannot load the model', 'error');
   }
 
-  onFileDownload(id: string) {
-    console.log('DOWNLOAD FILE', id);
-
+  onFileDownload(file: File) {
     // redirect to file url in storage
     // ...
 
-    // if url is null
-
     this.model3d$
       .pipe(
-        switchMap((mode3d) =>
-          this.checkoutService.createCheckoutSession(mode3d.id)
-        )
+        tap((_) => {
+          this.loader.show();
+        }),
+        mergeMap((model3d) =>
+          this.model3dService.getModelPrivateBlobUrl(model3d.id, file.id).pipe(
+            mergeMap((url) => {
+              if (url) {
+                return this.model3dService.getBlobFromUrl(url).pipe(
+                  tap((blob) => saveAs(blob, file.name)),
+                  finalize(() => {
+                    this.loader.hide();
+                  }),
+                  catchError((err) => {
+                    console.error(err);
+                    return EMPTY;
+                  })
+                );
+              } else {
+                return this.checkoutService
+                  .createCheckoutSession(model3d.id)
+                  .pipe(
+                    tap(({ url }) => {
+                      location.href = url;
+                      // console.log(url);
+                    }),
+                    catchError((err) => {
+                      console.error(err);
+                      return EMPTY;
+                    })
+                  );
+              }
+            })
+          )
+        ),
+        catchError((err) => {
+          console.error(err);
+          return EMPTY;
+        })
       )
-      .subscribe(({ url }) => {
-        location.href = url;
-        // console.log(url);
-      });
+      .subscribe();
+
+    // this.model3d$
+    //   .pipe(
+    //     switchMap((model3d) =>
+    //       this.model3dService.getModelPrivateBlobUrl(model3d.id, file.id).pipe(
+    //         filter((url) => !!url),
+    //         mergeMap((url) => this.model3dService.getBlobFromUrl(url))
+    //       )
+    //     )
+    //   )
+    //   .subscribe((blob) => saveAs(blob, file.name));
+
+    // this.model3d$
+    //   .pipe(
+    //     switchMap((model3d) =>
+    //       this.model3dService.getModelPrivateBlobUrl(model3d.id, file.id).pipe(
+    //         filter((url) => !url),
+    //         mergeMap((_) =>
+    //           this.checkoutService.createCheckoutSession(model3d.id)
+    //         )
+    //       )
+    //     )
+    //   )
+    //   .subscribe(({ url }) => {
+    //     location.href = url;
+    //     // console.log(url);
+    //   });
   }
 
   // onFileDownload(fileExt: string) {
