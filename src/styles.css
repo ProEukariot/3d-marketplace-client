@@ -161,3 +161,23 @@ mat-progress-bar.mat-mdc-progress-bar .mdc-linear-progress__buffer-bar {
 
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
+
+mat-slider-visual-thumb.mdc-slider__thumb.mat-mdc-slider-visual-thumb
+  .mdc-slider__value-indicator-container {
+  @apply z-[100];
+}
+
+.mat-mdc-slider.mat-primary {
+  --mdc-slider-handle-color: #fff;
+  --mdc-slider-focus-handle-color: #fff;
+  --mdc-slider-hover-handle-color: #fff;
+  --mdc-slider-active-track-color: rgb(161 161 170);
+  --mdc-slider-inactive-track-color: rgb(161 161 170);
+  --mat-mdc-slider-ripple-color: rgb(161 161 170);
+  --mat-mdc-slider-hover-ripple-color: rgb(161, 161, 170, 0.1);
+  --mat-mdc-slider-focus-ripple-color: rgb(161, 161, 170, 0.2);
+}
+
+.mdc-slider__thumb.mat-mdc-slider-visual-thumb .mdc-slider__thumb-knob {
+  @apply shadow-sm shadow-black;
+}

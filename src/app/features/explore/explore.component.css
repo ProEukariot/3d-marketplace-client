@@ -1,0 +1,4 @@
+mat-toolbar > * {
+  @apply flex-1;
+}
+

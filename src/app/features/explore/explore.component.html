@@ -1,4 +1,23 @@
-<section class="mt-nav p-4">
+<section class="mt-nav px-2">
+  <mat-toolbar
+    class="sticky p-0 px-4 top-[var(--nav-margin)] gap-4 z-50 bg-transparent"
+  >
+    <app-my-input
+      label="Search"
+      [(ngModel)]="filterOptions.pattern"
+    ></app-my-input>
+
+    <mat-slider
+      [min]="priceRange.min"
+      [max]="priceRange.max"
+      discrete
+      [displayWith]="formatLabel"
+    >
+      <input matSliderStartThumb [(ngModel)]="filterOptions.minRange" />
+      <input matSliderEndThumb [(ngModel)]="filterOptions.maxRange" />
+    </mat-slider>
+  </mat-toolbar>
+
   <div class="grid-template">
     <ng-container *ngFor="let model of models$ | async">
       <app-card [model]="model" (click)="onCardClick(model.id)" />

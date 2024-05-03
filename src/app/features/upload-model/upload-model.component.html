@@ -45,7 +45,10 @@
             Price is required
           </li>
           <li *ngIf="form.controls['price'].hasError('min')" class="text-sm">
-            Price must be greater that 0
+            Price must be greater than 0
+          </li>
+          <li *ngIf="form.controls['price'].hasError('max')" class="text-sm">
+            Price must be less than 100000
           </li>
         </ul>
       </div>
@@ -55,49 +58,49 @@
     <div class="mb-4">
       <div
         dragAndDrop
-        (fileDropped)="materialInp.setValue($event.files)"
+        (fileDropped)="imageInp.setValue($event.files)"
         class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
       >
-        <span class="p-2">Drop materials or</span>
+        <span class="p-2">Drop image or</span>
         <app-my-file-input
-          #materialInp
-          [multiple]="true"
-          mode="push"
-          formControlName="materials"
+          #imageInp
+          [multiple]="false"
+          mode="default"
+          formControlName="image"
           label="Choose files"
         ></app-my-file-input>
       </div>
 
       <div
-        *ngIf="hasError('materials')"
+        *ngIf="hasError('image')"
         class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
       >
         <ul class="text-red-500 list-disc list-inside ps-2">
           <li
-            *ngIf="form.controls['materials'].hasError('acceptExt')"
+            *ngIf="form.controls['image'].hasError('acceptExt')"
             class="text-sm"
           >
             We accept only .png, .jpg, .jpeg files
           </li>
           <li
-            *ngIf="form.controls['materials'].hasError('maxArrayLength')"
+            *ngIf="form.controls['image'].hasError('maxArrayLength')"
             class="text-sm"
           >
-            Max files number is 20
+            Only single file is allowed
           </li>
         </ul>
       </div>
 
       <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2">
         <li
-          *ngFor="let material of form.controls['materials'].value; index as i"
+          *ngFor="let material of form.controls['image'].value; index as i"
           class="p-2 px-4"
         >
           <div class="flex items-center justify-between">
             <span>{{ material.name }}</span>
             <button
               mat-icon-button
-              (click)="materialInp.removeAt(i)"
+              (click)="imageInp.removeAt(i)"
               class="icon-btn-sm"
             >
               <mat-icon>close</mat-icon>

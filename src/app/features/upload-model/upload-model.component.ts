@@ -31,7 +31,7 @@ import { LoaderService } from 'src/app/shared/services/loader.service';
 export class UploadModelComponent implements OnInit {
   form!: FormGroup;
   formSubmitted = false;
-  @ViewChild('materialInp') materialFileInp!: FileInputComponent;
+  @ViewChild('imageInp') imageFileInp!: FileInputComponent;
 
   constructor(
     private readonly model3dService: Model3dService,
@@ -45,7 +45,7 @@ export class UploadModelComponent implements OnInit {
 
     if (this.form.invalid) return;
 
-    const materialFiles = this.form.controls['materials'].value as File[];
+    const imageFile = this.form.controls['image'].value as File[];
     const modelFiles = this.form.controls['models'].value as File[];
 
     const formData = new FormData();
@@ -53,9 +53,7 @@ export class UploadModelComponent implements OnInit {
     formData.append('title', this.form.controls['title'].value);
     formData.append('price', this.form.controls['price'].value);
 
-    materialFiles.forEach((file) =>
-      formData.append('materials', file, file.name)
-    );
+    imageFile.forEach((file) => formData.append('images', file, file.name));
     modelFiles.forEach((file) => formData.append('models', file, file.name));
 
     this.loaderService.show();
@@ -96,12 +94,16 @@ export class UploadModelComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[A-Za-z0-9-_]*$'),
       ]),
-      price: new FormControl(0, [Validators.min(0), Validators.required]),
-      materials: new FormControl<File[]>(
+      price: new FormControl(0, [
+        Validators.min(0),
+        Validators.max(100_000),
+        Validators.required,
+      ]),
+      image: new FormControl<File[]>(
         [],
         [
           AppValidators.acceptExt(['png', 'jpg', 'jpeg']),
-          AppValidators.maxArrayLength(20),
+          AppValidators.maxArrayLength(1),
         ]
       ),
       models: new FormControl<File[]>(

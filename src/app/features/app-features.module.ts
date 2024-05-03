@@ -5,7 +5,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { UploadModelComponent } from './upload-model/upload-model.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponentsModule } from '../shared/components/app-components.module';
 import { ExploreComponent } from './explore/explore.component';
 import { ModelDetailsComponent } from './model-details/model-details.component';
@@ -73,6 +73,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     MaterialModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     AppComponentsModule,

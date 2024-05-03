@@ -32,6 +32,17 @@ export class Model3dService {
     });
   }
 
+  getModelImagePublicBlobUrl(id: string) {
+    return this.http.get(
+      this.urlService.apiUrl(['models', 'preview', id], {
+        queryParams: { target: 'images' },
+      }),
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
   getModelPrivateBlobUrl(id: string, blobId: string) {
     return this.http.get(
       this.urlService.apiUrl(['models', id, 'blob', blobId]),
@@ -49,13 +60,30 @@ export class Model3dService {
     return this.http.get<Model3d>(this.urlService.apiUrl(['models', id]));
   }
 
-  get3dModels(cursor?: string) {
+  get3dModels(
+    pagination: { limit: number; cursor?: string },
+    filtering?: { pattern?: string; minRange?: number; maxRange?: number }
+  ) {
     const limit = 4;
 
     return this.http.get<Model3d[]>(
       this.urlService.apiUrl(['models'], {
-        queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
+        queryParams: {
+          cursor: pagination.cursor ? btoa(pagination.cursor) : undefined,
+          limit: pagination.limit,
+          pattern: filtering?.pattern,
+          minRange: filtering?.minRange,
+          maxRange: filtering?.maxRange,
+        },
       })
+    );
+  }
+
+  getMinMaxPrice() {
+    type PriceRange = { min: number; max: number };
+
+    return this.http.get<PriceRange>(
+      this.urlService.apiUrl(['models', 'price-range'])
     );
   }
 
