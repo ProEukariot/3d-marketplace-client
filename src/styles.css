@@ -181,3 +181,7 @@ mat-slider-visual-thumb.mdc-slider__thumb.mat-mdc-slider-visual-thumb
 .mdc-slider__thumb.mat-mdc-slider-visual-thumb .mdc-slider__thumb-knob {
   @apply shadow-sm shadow-black;
 }
+
+app-control-error .error {
+  @apply text-red-500 text-sm;
+}

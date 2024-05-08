@@ -6,59 +6,22 @@
     (ngSubmit)="onSubmit()"
     class="flex flex-col relative max-w-80"
   >
-    <app-my-input
-      formControlName="username"
-      label="Username"
-      class="mb-4"
-    ></app-my-input>
+    <div class="mb-2">
+      <app-input formControlName="username" label="Username"></app-input>
+    </div>
 
-    <app-my-input
-      formControlName="password"
-      label="Password"
-      type="password"
-      class="mb-4"
-    ></app-my-input>
+    <div class="mb-2">
+      <app-input
+        formControlName="password"
+        label="Password"
+        type="password"
+      ></app-input>
+    </div>
 
     <button type="submit" class="btn">Log in</button>
 
     <a [routerLink]="['../', 'signup']" [replaceUrl]="true" class="link"
       >Sign up</a
     >
-
-    <div class="relative mt-2">
-      <div
-        *ngIf="form.invalid && formSubmitted"
-        class="absolute top-0 left-0 w-full bg-red-50/50 border border-red-500 border-solid rounded-xl p-2"
-      >
-        <ul class="text-red-500 list-disc list-inside ps-2">
-          <!-- Username errors -->
-          <li *ngIf="hasError('username', 'required')" class="text-sm">
-            Username required
-          </li>
-          <li *ngIf="hasError('username', 'minlength')" class="text-sm">
-            Username must be at least 8 chars long
-          </li>
-          <li *ngIf="hasError('username', 'maxlength')" class="text-sm">
-            Username must be less than 20 chars long
-          </li>
-          <li *ngIf="hasError('username', 'pattern')" class="text-sm">
-            Username must contain latin chars and digits
-          </li>
-          <!-- Password errors -->
-          <li *ngIf="hasError('password', 'required')" class="text-sm">
-            Password required
-          </li>
-          <li *ngIf="hasError('password', 'minlength')" class="text-sm">
-            Password must be at least 8 chars long
-          </li>
-          <li *ngIf="hasError('password', 'maxlength')" class="text-sm">
-            Username must be less than 20 chars long
-          </li>
-          <li *ngIf="hasError('password', 'pattern')" class="text-sm">
-            Password must contain latin chars and digits
-          </li>
-        </ul>
-      </div>
-    </div>
   </form>
 </section>

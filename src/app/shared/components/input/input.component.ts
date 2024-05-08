@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'app-my-input',
-  templateUrl: './my-input.component.html',
-  styleUrls: ['./my-input.component.css'],
+  selector: 'app-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.css'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: MyInputComponent, multi: true },
+    { provide: NG_VALUE_ACCESSOR, useExisting: InputComponent, multi: true },
   ],
 })
-export class MyInputComponent implements ControlValueAccessor {
+export class InputComponent implements ControlValueAccessor {
   @Input() type: 'text' | 'number' | 'password' = 'text';
   @Input() label: string = '';
   @Input() value: string | number = '';

@@ -36,7 +36,12 @@ export class AppValidators {
 
       for (let ext of extensions) {
         if (!allowedExt.includes(ext)) {
-          return { acceptExt: true };
+          return {
+            acceptExt: {
+              expect: allowedExt.join(', '),
+              actual: extensions.join(', '),
+            },
+          };
         }
       }
 
@@ -48,7 +53,9 @@ export class AppValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       const arr = control.value;
 
-      return arr.length > max ? { maxArrayLength: true } : null;
+      return arr.length > max
+        ? { maxArrayLength: { expect: max, actual: arr.length } }
+        : null;
     };
   }
 

@@ -4,6 +4,9 @@ import { DragAndDropDirective } from './drag-and-drop.directive';
 import { FileValueAccessor } from './file-value-accessor.directive';
 import { IntercextionListenerDirective } from './intercextion-listener.directive';
 import { DisplayPasswordDirective } from './display-password.directive';
+import { ControlErrorsDirective } from './control-errors.directive';
+import { FormSubmitDirective } from './form-submit.directive';
+import { ControlErrorContainerDirective } from './control-error-container.directive';
 
 @NgModule({
   declarations: [
@@ -11,6 +14,9 @@ import { DisplayPasswordDirective } from './display-password.directive';
     FileValueAccessor,
     IntercextionListenerDirective,
     DisplayPasswordDirective,
+    ControlErrorsDirective,
+    FormSubmitDirective,
+    ControlErrorContainerDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -18,6 +24,9 @@ import { DisplayPasswordDirective } from './display-password.directive';
     FileValueAccessor,
     IntercextionListenerDirective,
     DisplayPasswordDirective,
+    ControlErrorsDirective,
+    FormSubmitDirective,
+    ControlErrorContainerDirective,
   ],
 })
 export class AppDirectivesModule {}

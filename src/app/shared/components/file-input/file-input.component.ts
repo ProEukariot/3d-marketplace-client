@@ -1,137 +1,67 @@
-import { FocusMonitor } from '@angular/cdk/a11y';
-import {
-  Component,
-  ElementRef,
-  Host,
-  HostBinding,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Self,
-  SkipSelf,
-  ViewChild,
-} from '@angular/core';
-import {
-  NgControl,
-  AbstractControlDirective,
-  ControlValueAccessor,
-  FormGroup,
-  FormControl,
-  ReactiveFormsModule,
-  NgForm,
-  FormGroupDirective,
-} from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/form-field';
-import { Observable, Subject, take } from 'rxjs';
-import { MaterialModule } from 'src/app/material/material.module';
-import { AppDirectivesModule } from '../../directives/app-directives.module';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Component, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-file-input',
   templateUrl: './file-input.component.html',
   styleUrls: ['./file-input.component.css'],
   providers: [
-    { provide: MatFormFieldControl, useExisting: FileInputComponent },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: FileInputComponent,
+      multi: true,
+    },
   ],
-  standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, AppDirectivesModule],
 })
-export class FileInputComponent
-  implements
-    MatFormFieldControl<File[] | null>,
-    OnInit,
-    OnDestroy,
-    ControlValueAccessor
-{
-  static nextId = 0;
-
-  // @ViewChild('inputBtn', { static: true })
-  // inputBtnRef!: ElementRef<HTMLButtonElement>;
-
-  @ViewChild('fileInput', { static: true })
-  fileInputRef!: ElementRef<HTMLInputElement>;
-
-  @Input()
-  mode: 'default' | 'stack' = 'default';
-
+export class FileInputComponent implements ControlValueAccessor {
+  @Input() mode: 'default' | 'push' = 'default';
   @Input() multiple: boolean = false;
-  @Input() accept: string = '*/*';
+  @Input() label: string = 'Choose file';
 
-  files!: File[] | null;
+  value: File[] = [];
+  onChange!: (value: File[] | null) => void;
+  onTouched!: () => void;
 
-  @Input()
-  set value(value: File[] | null) {
-    this.control.setValue(value);
-    this.onChange(value);
-    this.stateChanges.next();
+  removeAt(i: number) {
+    if (this.value.length < i + 1) return;
+
+    this.value?.splice(i, 1);
+    this.onChange(this.value);
+    this.onTouched();
   }
 
-  get value() {
-    if (!this.control.value) return null;
-    const files = Array.from(this.control.value) as File[];
-    return files;
-
-    // return this.control.value;
+  clear() {
+    this.value = [];
+    this.onChange([]);
+    this.onTouched();
   }
 
-  stateChanges = new Subject<void>();
+  setValue(fileList: FileList | null) {
+    let inputFiles: File[] = [];
 
-  @HostBinding()
-  id = `dnd-file-input-id-${FileInputComponent.nextId++}`;
-
-  placeholder!: string;
-
-  focused!: boolean;
-
-  get empty() {
-    return !this.value || this.value.length < 0;
-  }
-
-  shouldLabelFloat!: boolean;
-
-  @Input()
-  required!: boolean;
-
-  @Input()
-  disabled!: boolean;
-
-  get errorState() {
-    return this.errorMatcher.isErrorState(this.ngControl.control, this.form);
-  }
-
-  controlType = 'dnd-file-input';
-
-  // autofilled?: boolean | undefined;
-
-  @HostBinding('attr.aria-describedby')
-  userAriaDescribedBy = '';
-
-  control!: FormControl;
-
-  constructor(
-    private readonly focusMonitor: FocusMonitor,
-    private errorMatcher: ErrorStateMatcher,
-    @Optional() @Self() public ngControl: NgControl,
-    @Optional() @SkipSelf() @Host() public form: FormGroupDirective
-  ) {
-    if (this.ngControl != null) {
-      this.ngControl.valueAccessor = this;
+    if (fileList) {
+      inputFiles = this.fileListToArray(fileList);
     }
 
-    this.control = new FormControl();
+    switch (this.mode) {
+      case 'push':
+        this.value?.push(...inputFiles);
+        break;
+      default:
+        this.value = inputFiles;
+        break;
+    }
+
+    this.onChange(this.value);
+    this.onTouched();
   }
 
-  onChange = (value: File[] | null) => {};
-  onTouch = () => {};
+  private fileListToArray(list: FileList) {
+    return Array.from(list);
+  }
 
-  writeValue(obj: File[] | null): void {
-    // this._value = obj;
-    // this.files = obj;
+  writeValue(obj: File[]): void {
     this.value = obj;
-    this.files = obj;
-    this.control.setValue(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -139,92 +69,8 @@ export class FileInputComponent
   }
 
   registerOnTouched(fn: any): void {
-    this.onTouch = fn;
+    this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    this.control.disable();
-    this.stateChanges.next();
-  }
-
-  ngOnInit(): void {
-    this.focusMonitor.monitor(this.fileInputRef).subscribe((focused) => {
-      this.focused = !!focused;
-      this.stateChanges.next();
-    });
-    this.focusMonitor
-      .monitor(this.fileInputRef)
-      .pipe(take(1))
-      .subscribe(() => this.onTouch());
-  }
-
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.fileInputRef);
-    this.stateChanges.complete();
-  }
-
-  // private updateValue(newValue: File[] | null) {
-  //   const arr = [...(this.files ?? []), ...(newValue ?? [])];
-  //   return arr;
-  // }
-
-  onFileChange(fileList: FileList | null) {
-    if (this.disabled) return;
-    this.focus();
-
-    //if no files selected
-    if (!fileList) {
-      if (this.mode == 'stack') {
-        this.value = this.files;
-        return;
-      }
-
-      this.value = null;
-      return;
-    }
-
-    const files = Array.from(fileList);
-
-    if (this.mode == 'stack') {
-      this.files = [...(this.files ?? []), ...files];
-      this.value = this.files;
-      return;
-    }
-
-    this.value = files;
-  }
-
-  removeFile() {
-    this.files = null;
-    this.value = this.files;
-    this.onChange(this.files);
-  }
-
-  removeFileAt(index: number) {
-    if (this.mode != 'stack')
-      throw new Error('Method used only with stack mode');
-
-    if (this.files) {
-      this.files.splice(index, 1);
-      if (this.files.length < 1) {
-        this.files = null;
-      }
-      this.value = this.files;
-      this.onChange(this.files);
-    }
-    return;
-  }
-
-  setDescribedByIds(ids: string[]): void {
-    this.userAriaDescribedBy = ids.join(' ');
-  }
-
-  onContainerClick(event: MouseEvent): void {
-    // this.focusMonitor.focusVia(this.fileInputRef, 'program');
-  }
-
-  focus() {
-    this.focusMonitor.focusVia(this.fileInputRef, 'program');
-  }
+  setDisabledState?(isDisabled: boolean): void {}
 }

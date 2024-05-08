@@ -1,11 +1,11 @@
 <section class="mt-nav px-2">
   <mat-toolbar
-    class="sticky p-0 px-4 top-[var(--nav-margin)] gap-4 z-50 bg-transparent"
+    class="sticky p-0 px-2 top-[var(--nav-margin)] gap-4 z-50 bg-transparent"
   >
-    <app-my-input
+    <app-input
       label="Search"
       [(ngModel)]="filterOptions.pattern"
-    ></app-my-input>
+    ></app-input>
 
     <mat-slider
       [min]="priceRange.min"

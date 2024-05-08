@@ -14,7 +14,6 @@ import { AppValidators } from 'src/app/shared/validators/app-validators';
 })
 export class SignupComponent implements OnInit {
   form!: FormGroup;
-  formSubmitted = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -23,8 +22,6 @@ export class SignupComponent implements OnInit {
   ) {}
 
   onSubmit() {
-    this.formSubmitted = true;
-
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
@@ -50,12 +47,6 @@ export class SignupComponent implements OnInit {
             );
         }
       );
-  }
-
-  hasError(controlName: string, error: string) {
-    return (
-      this.form.controls[controlName].hasError(error) && this.formSubmitted
-    );
   }
 
   ngOnInit(): void {

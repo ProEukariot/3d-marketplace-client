@@ -14,7 +14,6 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 })
 export class SigninComponent implements OnInit {
   form!: FormGroup;
-  public formSubmitted = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -23,8 +22,6 @@ export class SigninComponent implements OnInit {
   ) {}
 
   onSubmit() {
-    this.formSubmitted = true;
-
     if (this.form.invalid) return;
 
     const formValue = this.form.value;
@@ -46,12 +43,6 @@ export class SigninComponent implements OnInit {
           }
         }
       );
-  }
-
-  hasError(controlName: string, error: string) {
-    return (
-      this.form.controls[controlName].hasError(error) && this.formSubmitted
-    );
   }
 
   ngOnInit(): void {

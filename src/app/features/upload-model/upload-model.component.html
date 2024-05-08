@@ -1,97 +1,41 @@
 <section class="mt-nav p-4">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col">
     <!-- title input -->
-    <div class="mb-4">
-      <app-my-input formControlName="title" label="Title"></app-my-input>
-
-      <div
-        *ngIf="hasError('title')"
-        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
-      >
-        <ul class="text-red-500 list-disc list-inside ps-2">
-          <li
-            *ngIf="form.controls['title'].hasError('required')"
-            class="text-sm"
-          >
-            Title is required
-          </li>
-          <li
-            *ngIf="form.controls['title'].hasError('pattern')"
-            class="text-sm"
-          >
-            Title must contain latin chars and digits
-          </li>
-        </ul>
-      </div>
+    <div class="mb-2">
+      <app-input formControlName="title" label="Title"></app-input>
     </div>
 
     <!-- Price input -->
-    <div class="mb-4">
-      <app-my-input
+    <div class="mb-2">
+      <app-input
         formControlName="price"
         label="Price"
         type="number"
-      ></app-my-input>
-
-      <div
-        *ngIf="hasError('price')"
-        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
-      >
-        <ul class="text-red-500 list-disc list-inside ps-2">
-          <li
-            *ngIf="form.controls['price'].hasError('required')"
-            class="text-sm"
-          >
-            Price is required
-          </li>
-          <li *ngIf="form.controls['price'].hasError('min')" class="text-sm">
-            Price must be greater than 0
-          </li>
-          <li *ngIf="form.controls['price'].hasError('max')" class="text-sm">
-            Price must be less than 100000
-          </li>
-        </ul>
-      </div>
+      ></app-input>
     </div>
 
     <!-- material files input -->
-    <div class="mb-4">
+    <div class="mb-2">
       <div
         dragAndDrop
+        controlErrorContainer
         (fileDropped)="imageInp.setValue($event.files)"
         class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
       >
         <span class="p-2">Drop image or</span>
-        <app-my-file-input
+        <app-file-input
           #imageInp
           [multiple]="false"
           mode="default"
           formControlName="image"
           label="Choose files"
-        ></app-my-file-input>
+        ></app-file-input>
       </div>
 
-      <div
-        *ngIf="hasError('image')"
-        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      <ul
+        *ngIf="form.controls['image'].value.length"
+        class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2"
       >
-        <ul class="text-red-500 list-disc list-inside ps-2">
-          <li
-            *ngIf="form.controls['image'].hasError('acceptExt')"
-            class="text-sm"
-          >
-            We accept only .png, .jpg, .jpeg files
-          </li>
-          <li
-            *ngIf="form.controls['image'].hasError('maxArrayLength')"
-            class="text-sm"
-          >
-            Only single file is allowed
-          </li>
-        </ul>
-      </div>
-
-      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2">
         <li
           *ngFor="let material of form.controls['image'].value; index as i"
           class="p-2 px-4"
@@ -111,55 +55,27 @@
     </div>
 
     <!-- 3d models file input -->
-    <div class="mb-4">
+    <div class="mb-2">
       <div
         dragAndDrop
+        controlErrorContainer
         (fileDropped)="modelsInp.setValue($event.files)"
         class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
       >
         <span class="p-2">Drop models or</span>
-        <app-my-file-input
+        <app-file-input
           #modelsInp
           [multiple]="true"
           mode="push"
           formControlName="models"
           label="Choose files"
-        ></app-my-file-input>
+        ></app-file-input>
       </div>
 
-      <div
-        *ngIf="hasError('models')"
-        class="bg-red-50/50 border border-red-500 border-solid rounded-xl p-2 mt-2"
+      <ul
+        *ngIf="form.controls['models'].value.length"
+        class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2"
       >
-        <ul class="text-red-500 list-disc list-inside ps-2">
-          <li
-            *ngIf="form.controls['models'].hasError('required')"
-            class="text-sm"
-          >
-            Files are required
-          </li>
-          <li
-            *ngIf="form.controls['models'].hasError('uniqueExt')"
-            class="text-sm"
-          >
-            Same extensions are not allowed
-          </li>
-          <li
-            *ngIf="form.controls['models'].hasError('acceptExt')"
-            class="text-sm"
-          >
-            We accept only .glb, .obj, .fbx files
-          </li>
-          <li
-            *ngIf="form.controls['models'].hasError('maxArrayLength')"
-            class="text-sm"
-          >
-            Max files number is 20
-          </li>
-        </ul>
-      </div>
-
-      <ul class="bg-white rounded-xl shadow-sm shadow-zinc-400 mt-2">
         <li
           *ngFor="let model of form.controls['models'].value; index as i"
           class="p-2 px-4"
@@ -187,104 +103,3 @@
     </button>
   </form>
 </section>
-
-<!-- <section class="p-4 mt-[var(--nav-margin)]">
-  <form
-    [formGroup]="uploadModelForm"
-    (ngSubmit)="onSubmit()"
-    class="flex flex-col"
-  >
-    <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input
-        #nameInput
-        matInput
-        type="text"
-        maxlength="20"
-        formControlName="name"
-      />
-      <mat-hint align="end">{{ nameInput.value.length }}/20</mat-hint>
-      <mat-error *ngIf="uploadModelForm.controls['name'].hasError('required')"
-        >Name is required</mat-error
-      >
-      <mat-error *ngIf="uploadModelForm.controls['name'].hasError('pattern')"
-        >Name should only contain Latin characters, numbers, hyphens, and
-        underscores
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Amount</mat-label>
-      <input
-        matInput
-        min="0"
-        max="99999"
-        type="number"
-        formControlName="amount"
-      />
-      <span matTextSuffix class="ms-2">$&nbsp;</span>
-      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('required')"
-        >Amount is required</mat-error
-      >
-      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('min')"
-        >Minimum value is 0</mat-error
-      >
-      <mat-error *ngIf="uploadModelForm.controls['amount'].hasError('max')"
-        >Maximum value is 99999</mat-error
-      >
-    </mat-form-field>
-
-    <mat-form-field
-      dragAndDrop
-      (fileDropped)="onFileDropped($event)"
-      (dragover)="onDragOver()"
-      (dragleave)="onDragLeave()"
-    >
-      <app-file-input
-        #fileInput
-        formControlName="files"
-        [required]="true"
-        [multiple]="true"
-        accept=".glb"
-        mode="stack"
-      ></app-file-input>
-      <mat-error *ngIf="uploadModelForm.controls['files'].hasError('required')"
-        >Files are required</mat-error
-      >
-      <mat-error
-        *ngIf="uploadModelForm.controls['files'].hasError('acceptExt')"
-      >
-        This file extensions are not supported</mat-error
-      >
-      <mat-error *ngIf="uploadModelForm.controls['files'].hasError('uniqueExt')"
-        >Same file extensions are not allowed</mat-error
-      >
-    </mat-form-field>
-
-    <mat-action-list>
-      <mat-list-item
-        *ngFor="let file of uploadModelForm.controls['files'].value; index as i"
-      >
-        <span>{{ file.name }}</span>
-        <button
-          mat-icon-button
-          matListItemMeta
-          type="button"
-          (click)="fileInput.removeFileAt(i)"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-action-list>
-
-    <button
-      mat-raised-button
-      type="submit"
-      color="accent"
-      type="submit"
-      class="p-6"
-    >
-      Upload model
-    </button>
-  </form>
-</section> -->

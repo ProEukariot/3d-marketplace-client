@@ -1,26 +1,10 @@
-<div class="flex items-center justify-center h-52">
-  <label class="select-none me-2" [class.opacity-50]="disabled"
-    >Drag and drop or</label
-  >
-  <button
-    #inputBtn
-    mat-raised-button
-    type="button"
-    (click)="fileInput.click()"
-    (focus)="fileInput.focus()"
-    [class.opacity-50]="disabled"
-  >
-    Choose file
-  </button>
+<label class="btn">
+  {{ label }}
   <input
-    #fileInput
+    #target
     type="file"
-    [formControl]="control"
-    (change)="onFileChange(fileInput.files)"
     [multiple]="multiple"
-    [accept]="accept"
-    class="opacity-0 absolute w-0 h-0"
+    (change)="setValue(target.files)"
+    class="hidden"
   />
-</div>
-
-<!-- <button (click)="log()" type="button">LOG</button> -->
+</label>
