@@ -56,6 +56,11 @@ const routes: Routes = [
       { path: 'failure', component: PaymentFailureComponent },
     ],
   },
+  // {
+  //   path: 'edit/:id',
+  //   canActivate: [authGuard],
+  //   component: UploadModelComponent,
+  // },
 ];
 
 @NgModule({

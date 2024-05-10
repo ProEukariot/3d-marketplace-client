@@ -21,14 +21,32 @@
         *ngIf="model3d.files && model3d.files.length; else elseTemplate"
       >
         <button
+          mat-button
           *ngFor="let file of model3d.files"
           [disabled]="!(isLoggedIn$ | async)"
           (click)="onFileDownload(file)"
-          class="btn flex-initial me-2"
+          class="flex-initial me-2"
         >
           Download .{{ file.name.split(".").pop() }}
         </button>
       </ng-container>
+
+      <div class="flex items-center">
+        <mat-icon class="scale-[0.8]">download</mat-icon>
+        <span>{{ model3d?.downloads }}</span>
+      </div>
+
+      <!-- <a
+        *ngIf="user && model3d.user && model3d.user.id == user.id"
+        [routerLink]="['/edit', model3d.id]"
+        mat-button
+        class="flex-initial ms-auto"
+      >
+        Edit
+      </a> -->
+
+      <!-- <p>{{ model3d.user | json }}</p>
+      <p>{{ user | json }}</p> -->
 
       <ng-template #elseTemplate>
         <span>No available files for that model.</span>

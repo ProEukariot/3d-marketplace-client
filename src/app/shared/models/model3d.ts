@@ -6,6 +6,7 @@ export interface Model3d extends ICard {
   id: string;
   name: string;
   price: number;
+  downloads?: number;
   createdAt?: Date;
   files?: Array<File>;
   user?: User;

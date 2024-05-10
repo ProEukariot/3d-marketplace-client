@@ -33,7 +33,7 @@
     <span *ngIf="isFetching" class="text-xl text-center my-2">
       Loading...
     </span>
-    <button *ngIf="!isFetching" (click)="onScroll()" class="btn mt-2">
+    <button mat-button *ngIf="!isFetching" (click)="onScroll()" class="btn mt-2">
       Upload more
     </button>
   </div>

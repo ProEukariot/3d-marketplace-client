@@ -40,6 +40,18 @@ export class AuthService {
     return this.localService.get(ACCESS_TOKEN);
   }
 
+  getDecoded() {
+    const token = this.getToken();
+
+    if (!token) return null;
+
+    const [hdr, pld, sig] = token?.split('.');
+
+    const payload = JSON.parse(atob(pld));
+
+    return payload;
+  }
+
   signUp(userDto: RegisterDto) {
     return this.http.post<Token>(
       this.urlService.apiUrl(['auth', 'signup']),

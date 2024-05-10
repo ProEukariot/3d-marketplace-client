@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, map, min, of } from 'rxjs';
 import { IntercextionListenerDirective } from 'src/app/shared/directives/intercextion-listener.directive';
 import { Model3d } from 'src/app/shared/models/model3d';
 import { LoaderService } from 'src/app/shared/services/loader.service';
 import { Model3dService } from 'src/app/shared/services/model3d.service';
+
+// It is possible to use ViewContainerRef (filtering and sorting can be difficult to implement)
 
 @Component({
   selector: 'app-explore',

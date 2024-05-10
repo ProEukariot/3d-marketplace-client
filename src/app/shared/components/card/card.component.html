@@ -3,6 +3,12 @@
   <img mat-card-image [src]="imgUrl$ | async" />
   <mat-card-header>
     <mat-card-title>{{ model.name }}</mat-card-title>
-    <mat-card-subtitle>{{ model.price | currency }}</mat-card-subtitle>
+    <mat-card-subtitle class="flex">
+      <span>{{ model?.price | currency }}</span>
+      <div class="ms-auto flex items-center">
+        <mat-icon class="scale-[0.8]">download</mat-icon>
+        <span>{{ model?.downloads }}</span>
+      </div>
+    </mat-card-subtitle>
   </mat-card-header>
 </mat-card>

@@ -4,6 +4,7 @@
 
 :root {
   --nav-margin: 4rem;
+  --ripple-color: rgba(255, 255, 255, 0.4);
 }
 
 ::-webkit-scrollbar {
@@ -48,14 +49,6 @@ body {
   .btn {
     @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-black text-white text-center cursor-pointer select-none transition-all p-2 px-4;
   }
-
-  .btn-light {
-    @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-transparent text-black border border-zinc-400 text-center cursor-pointer select-none transition-all p-2 px-4;
-  }
-}
-
-.btn-light:hover {
-  @apply shadow-xl;
 }
 
 .drop-area {
@@ -184,4 +177,27 @@ mat-slider-visual-thumb.mdc-slider__thumb.mat-mdc-slider-visual-thumb
 
 app-control-error .error {
   @apply text-red-500 text-sm;
+}
+
+button[mat-button],
+a[mat-button] {
+  @apply btn;
+}
+
+button[mat-button] .mdc-button__label,
+a[mat-button] .mdc-button__label {
+  @apply text-white;
+}
+
+.mat-mdc-button,
+.mat-mdc-outlined-button {
+  --mat-mdc-button-ripple-color: var(--ripple-color);
+}
+
+label[role="button"] > div.mat-ripple-element {
+  @apply bg-[--ripple-color];
+}
+
+mat-card-header .mat-mdc-card-header-text {
+  @apply w-full;
 }

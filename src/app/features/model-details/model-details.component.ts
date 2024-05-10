@@ -34,6 +34,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { Model3d } from 'src/app/shared/models/model3d';
 import { Viewer3dComponent } from 'src/app/shared/components/viewer3d/viewer3d.component';
 import { LoaderService } from 'src/app/shared/services/loader.service';
+import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-model-details',
@@ -45,6 +46,7 @@ export class ModelDetailsComponent implements OnInit {
   public blobUrl$!: Observable<string>;
   public canvasDimensions!: { x: number; y: number };
   public model3d$!: Observable<Model3d>;
+  public user?: User;
 
   // public availableFiles: Array<FileMetaDto> = [];
 
@@ -66,6 +68,8 @@ export class ModelDetailsComponent implements OnInit {
     // this.modelUrl = 'XXX';
 
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+
+    this.user = this.authService.getDecoded()?.user;
 
     this.model3d$ = this.route.data.pipe(map(({ model }) => model));
 
