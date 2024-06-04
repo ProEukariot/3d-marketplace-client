@@ -1,3 +1,26 @@
-<section class="mt-16 p-4">
-  <p>home works!</p>
+<section
+  class="flex items-center justify-center absolute h-screen w-screen p-4"
+>
+  <div class="w-2/3">
+    <h1 class="text-4xl text-center">
+      Welcome to 3DGarden - Your Premier 3D Marketplace!
+    </h1>
+    <p class="my-12 hidden sm:block">
+      Discover, create, and connect in a world of endless possibilities. At
+      3DGarden, we're revolutionizing the way you interact with 3D content.
+      Whether you're a designer, artist, developer, or enthusiast, our
+      marketplace offers an extensive collection of high-quality 3D models,
+      assets, and resources tailored to meet your needs.
+    </p>
+
+    <strong class="hidden md:inline">
+      Unleash your creativity and explore the limitless possibilities of 3D
+      design. Sign up now to start browsing, buying, and selling the best 3D
+      models available. Welcome to the future of 3D content!
+    </strong>
+
+    <a [routerLink]="['/explore']" mat-button class="btn max-w-48 mt-8 mx-auto"
+      >Explore now!</a
+    >
+  </div>
 </section>

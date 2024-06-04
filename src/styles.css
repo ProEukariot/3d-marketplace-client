@@ -45,9 +45,13 @@ body {
   @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
+.outlined {
+  box-shadow: white 0px 0px 2px !important;
+}
+
 @layer components {
   .btn {
-    @apply flex items-center justify-center flex-1 rounded-xl shadow-sm shadow-zinc-400 bg-black text-white text-center cursor-pointer select-none transition-all p-2 px-4;
+    @apply flex items-center justify-center flex-1 rounded-xl bg-black text-white text-center cursor-pointer select-none transition-all outlined p-2 px-4;
   }
 }
 
@@ -200,4 +204,8 @@ label[role="button"] > div.mat-ripple-element {
 
 mat-card-header .mat-mdc-card-header-text {
   @apply w-full;
+}
+
+.mat-expansion-panel {
+  --mat-expansion-container-shape: 16px !important;
 }

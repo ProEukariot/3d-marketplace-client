@@ -18,11 +18,11 @@
 
     <div class="flex flex-row">
       <ng-container
-        *ngIf="model3d.files && model3d.files.length; else elseTemplate"
+        *ngIf="privateFiles && privateFiles.length; else elseTemplate"
       >
         <button
           mat-button
-          *ngFor="let file of model3d.files"
+          *ngFor="let file of privateFiles"
           [disabled]="!(isLoggedIn$ | async)"
           (click)="onFileDownload(file)"
           class="flex-initial me-2"
@@ -42,14 +42,14 @@
         mat-button
         class="flex-initial ms-auto"
       >
-        Edit
+        Delete
       </a> -->
 
       <!-- <p>{{ model3d.user | json }}</p>
       <p>{{ user | json }}</p> -->
 
       <ng-template #elseTemplate>
-        <span>No available files for that model.</span>
+        <span>No available files for that 3d model.</span>
       </ng-template>
     </div>
   </div>

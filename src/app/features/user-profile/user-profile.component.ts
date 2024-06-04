@@ -44,22 +44,22 @@ export class UserProfileComponent implements OnInit {
   }
 
   onScroll() {
-    this.isFetching = true;
-    this.loaderService.show();
+    // this.isFetching = true;
+    // this.loaderService.show();
 
-    this.models3dService
-      .getSubscribed3dModels(this.cursor)
-      .subscribe((items) => {
-        const currentItems = this.modelsSubject.getValue();
+    // this.models3dService
+    //   .getSubscribed3dModels(this.cursor)
+    //   .subscribe((items) => {
+    //     const currentItems = this.modelsSubject.getValue();
 
-        this.modelsSubject.next([...currentItems, ...items]);
+    //     this.modelsSubject.next([...currentItems, ...items]);
 
-        this.isFetching = false;
-        this.loaderService.hide();
+    //     this.isFetching = false;
+    //     this.loaderService.hide();
 
-        if (items.length < 1) {
-          this.intercextionListenerDirective.unsubscribe();
-        }
-      });
+    //     if (items.length < 1) {
+    //       this.intercextionListenerDirective.unsubscribe();
+    //     }
+    //   });
   }
 }

@@ -47,6 +47,7 @@ export class ModelDetailsComponent implements OnInit {
   public canvasDimensions!: { x: number; y: number };
   public model3d$!: Observable<Model3d>;
   public user?: User;
+  public privateFiles: File[] = [];
 
   // public availableFiles: Array<FileMetaDto> = [];
 
@@ -71,7 +72,15 @@ export class ModelDetailsComponent implements OnInit {
 
     this.user = this.authService.getDecoded()?.user;
 
-    this.model3d$ = this.route.data.pipe(map(({ model }) => model));
+    this.model3d$ = this.route.data.pipe(
+      map(({ model }) => model),
+      tap((model) => {
+        console.log(model);
+
+        this.privateFiles =
+          model.files?.filter((f) => f.access == 'private') ?? [];
+      })
+    );
 
     this.canvasDimensions = { x: window.innerWidth, y: window.innerHeight };
 

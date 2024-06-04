@@ -1,13 +1,13 @@
-<mat-card (click)="click.emit($event)" class="cursor-pointer">
+<mat-card (click)="click.emit($event)" class="cursor-pointer select-none">
   <!-- <img mat-card-image src="https://placehold.co/400" /> -->
   <img mat-card-image [src]="imgUrl$ | async" />
   <mat-card-header>
     <mat-card-title>{{ model.name }}</mat-card-title>
     <mat-card-subtitle class="flex">
-      <span>{{ model?.price | currency }}</span>
+      <span>{{ model.price | currency }}</span>
       <div class="ms-auto flex items-center">
         <mat-icon class="scale-[0.8]">download</mat-icon>
-        <span>{{ model?.downloads }}</span>
+        <span>{{ model.downloads }}</span>
       </div>
     </mat-card-subtitle>
   </mat-card-header>

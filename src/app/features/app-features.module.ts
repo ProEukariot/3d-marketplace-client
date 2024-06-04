@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UploadModelComponent } from './upload-model/upload-model.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponentsModule } from '../shared/components/app-components.module';
-import { ExploreComponent } from './explore/explore.component';
+import { ExploreComponent, ViewType } from './explore/explore.component';
 import { ModelDetailsComponent } from './model-details/model-details.component';
 import { AppDirectivesModule } from '../shared/directives/app-directives.module';
 import { SigninComponent } from './signin/signin.component';
@@ -15,16 +15,15 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from '../shared/guards/auth.guard';
 import { modelDetailsResolver } from './model-details/model-details.resolver';
-import { PaymentSuccessComponent } from './payment-success/payment-success.component';
-import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   {
     path: 'profile',
-    component: UserProfileComponent,
+    component: ExploreComponent,
     canActivate: [authGuard],
+    data: { viewType: ViewType.User },
   },
   {
     path: 'explore',
@@ -49,18 +48,6 @@ const routes: Routes = [
       { path: 'signup', component: SignupComponent },
     ],
   },
-  {
-    path: 'payment',
-    children: [
-      { path: 'success', component: PaymentSuccessComponent },
-      { path: 'failure', component: PaymentFailureComponent },
-    ],
-  },
-  // {
-  //   path: 'edit/:id',
-  //   canActivate: [authGuard],
-  //   component: UploadModelComponent,
-  // },
 ];
 
 @NgModule({
@@ -72,8 +59,6 @@ const routes: Routes = [
     HomeComponent,
     SigninComponent,
     SignupComponent,
-    PaymentSuccessComponent,
-    PaymentFailureComponent,
   ],
   imports: [
     CommonModule,

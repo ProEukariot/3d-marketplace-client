@@ -20,7 +20,7 @@
         dragAndDrop
         controlErrorContainer
         (fileDropped)="imageInp.setValue($event.files)"
-        class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl border-2 drop-area sm:flex-row"
       >
         <span class="p-2">Drop image or</span>
         <app-file-input
@@ -60,7 +60,7 @@
         dragAndDrop
         controlErrorContainer
         (fileDropped)="modelsInp.setValue($event.files)"
-        class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area sm:flex-row"
+        class="flex flex-col items-center justify-center h-72 rounded-3xl drop-area border-2 sm:flex-row"
       >
         <span class="p-2">Drop models or</span>
         <app-file-input

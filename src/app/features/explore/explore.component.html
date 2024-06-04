@@ -1,25 +1,42 @@
 <section class="mt-nav px-2">
   <mat-toolbar
-    class="sticky p-0 px-2 top-[var(--nav-margin)] gap-4 z-50 bg-transparent"
+    class="sticky top-[var(--nav-margin)] gap-4 z-50 bg-transparent h-auto p-2 mb-2"
   >
-    <app-input
-      label="Search"
-      [(ngModel)]="filterOptions.pattern"
-    ></app-input>
+    <mat-accordion class="max-w-96">
+      <mat-expansion-panel hideToggle #panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title class="select-none">Filters</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="flex flex-col">
+          <app-input
+            label="Search"
+            [(ngModel)]="filterOptions.pattern"
+          ></app-input>
 
-    <mat-slider
-      [min]="priceRange.min"
-      [max]="priceRange.max"
-      discrete
-      [displayWith]="formatLabel"
-    >
-      <input matSliderStartThumb [(ngModel)]="filterOptions.minRange" />
-      <input matSliderEndThumb [(ngModel)]="filterOptions.maxRange" />
-    </mat-slider>
+          <mat-slider
+            [min]="priceRange.min"
+            [max]="priceRange.max"
+            discrete
+            [displayWith]="formatLabel"
+          >
+            <input matSliderStartThumb [(ngModel)]="filterOptions.minRange" />
+            <input matSliderEndThumb [(ngModel)]="filterOptions.maxRange" />
+          </mat-slider>
+
+          <button
+            type="button"
+            (click)="applyFilters(); panel.close()"
+            mat-button
+          >
+            Apply
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-toolbar>
 
   <div class="grid-template">
-    <ng-container *ngFor="let model of models$ | async">
+    <ng-container *ngFor="let model of filteredModels$ | async">
       <app-card [model]="model" (click)="onCardClick(model.id)" />
     </ng-container>
   </div>
@@ -33,12 +50,21 @@
     <span *ngIf="isFetching" class="text-xl text-center my-2">
       Loading...
     </span>
-    <button mat-button *ngIf="!isFetching" (click)="onScroll()" class="btn mt-2">
-      Upload more
+    <button
+      mat-button
+      *ngIf="!isFetching"
+      (click)="onScroll()"
+      class="btn mt-2"
+    >
+      Load more
     </button>
   </div>
 
-  <a routerLink="/upload-model" mat-fab class="fixed right-8 bottom-8 bg-black">
+  <a
+    routerLink="/upload-model"
+    mat-fab
+    class="fixed right-8 bottom-8 bg-black outlined"
+  >
     <mat-icon>add</mat-icon>
   </a>
 </section>

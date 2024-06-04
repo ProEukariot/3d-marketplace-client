@@ -87,14 +87,31 @@ export class Model3dService {
     );
   }
 
-  getSubscribed3dModels(cursor?: string) {
+  getSubscribed3dModels(
+    pagination: { limit: number; cursor?: string },
+    filtering?: { pattern?: string; minRange?: number; maxRange?: number }
+  ) {
     const limit = 4;
 
     return this.http.get<Model3d[]>(
       this.urlService.apiUrl(['models', 'subscribed-models'], {
-        queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
+        queryParams: {
+          cursor: pagination.cursor ? btoa(pagination.cursor) : undefined,
+          limit: pagination.limit,
+          pattern: filtering?.pattern,
+          minRange: filtering?.minRange,
+          maxRange: filtering?.maxRange,
+        },
       })
     );
+
+    // const limit = 4;
+
+    // return this.http.get<Model3d[]>(
+    //   this.urlService.apiUrl(['models', 'subscribed-models'], {
+    //     queryParams: { cursor: cursor ? btoa(cursor) : undefined, limit },
+    //   })
+    // );
   }
 
   getFileUrl(id: string) {}
