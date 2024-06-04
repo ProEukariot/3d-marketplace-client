@@ -8,8 +8,9 @@ import { MaterialModule } from './material/material.module';
 import { AppFeaturesModule } from './features/app-features.module';
 import { AppDirectivesModule } from './shared/directives/app-directives.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './shared/interceptors/auth-interseptor';
+import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
 import { AppComponentsModule } from './shared/components/app-components.module';
+import { ExpiredTokenInterceptor } from './shared/interceptors/expired-token-interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { AppComponentsModule } from './shared/components/app-components.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ExpiredTokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
